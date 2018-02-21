@@ -1,4 +1,4 @@
-package net.heltner.ap_portfolio;
+package io.beskedr;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
