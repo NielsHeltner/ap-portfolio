@@ -9,9 +9,6 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static final String USERNAME = "io.beskedr.USERNAME";
-    public static final String PASSWORD = "io.beskedr.PASSWORD";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,15 +20,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
+        Intent registerIntent = new Intent(this, RegisterActivity.class);
         EditText inputUsername = findViewById(R.id.username);
         EditText inputPassword = findViewById(R.id.password);
         String username = inputUsername.getText().toString();
         String password = inputPassword.getText().toString();
 
-        intent.putExtra(USERNAME, username);
-        intent.putExtra(PASSWORD, password);
-        startActivity(intent);
+        registerIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
+        registerIntent.putExtra(getString(R.string.EXTRA_PASSWORD), password);
+
+        startActivity(registerIntent);
     }
 
 }

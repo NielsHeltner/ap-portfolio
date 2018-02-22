@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private int messages = 1;
+    private int messages = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY appname "beskedr.io">]>
 
 <resources>
-    <string name="app_name">&appname;</string>
+    <string name="app_name" translatable="false">&appname;</string>
+
+    <!-- Strings for dashboard -->
     <string name="no_messages">You have no messages :(</string>
+
+    <!-- Strings for login -->
+    <string name="prompt_login">Log in to &appname;</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="btn_login">Login</string>
     <string name="prompt_register">No account yet? Create an account.</string>
-    <string name="prompt_login">Log in to &appname;</string>
+
+    <!-- Strings for intent extras -->
+    <string name="EXTRA_USERNAME" translatable="false">io.beskedr.USERNAME</string>
+    <string name="EXTRA_PASSWORD" translatable="false">io.beskedr.PASSWORD</string>
 </resources>
