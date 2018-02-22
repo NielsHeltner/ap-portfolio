@@ -18,8 +18,14 @@
     <string name="prompt_name">Navn</string>
     <string name="prompt_email">Email</string>
     <string name="btn_register">Registrer</string>
+    <string name="toast_register_error">Fejl under registrering</string>
+    <string name="toast_register_success">Registreret</string>
+
+    <!-- Strings for menus -->
+    <string name="btn_logout">Log ud</string>
 
     <!-- Strings for intent extras -->
     <string name="EXTRA_USERNAME">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD">io.beskedr.PASSWORD</string>
+    <string name="toast_logout">Logget ud</string>
 </resources>

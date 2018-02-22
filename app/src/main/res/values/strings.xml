@@ -18,8 +18,14 @@
     <string name="prompt_name">Name</string>
     <string name="prompt_email">Email</string>
     <string name="btn_register">Register</string>
+    <string name="toast_register_error">Error during registration</string>
+    <string name="toast_register_success">Registered</string>
+
+    <!-- Strings for menus -->
+    <string name="btn_logout">Log out</string>
 
     <!-- Strings for intent extras -->
     <string name="EXTRA_USERNAME" translatable="false">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD" translatable="false">io.beskedr.PASSWORD</string>
+    <string name="toast_logout">Logged out</string>
 </resources>

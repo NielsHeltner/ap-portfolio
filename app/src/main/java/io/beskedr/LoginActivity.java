@@ -13,18 +13,26 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Intent intent = getIntent();
+        String enteredUsername = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
+        String enteredPassword = intent.getStringExtra(getString(R.string.EXTRA_PASSWORD));
+
+        ((EditText) findViewById(R.id.loginUsername)).setText(enteredUsername);
+        ((EditText) findViewById(R.id.loginPassword)).setText(enteredPassword);
     }
 
     public void login(View view) {
         Toast.makeText(getApplicationContext(), "Login", Toast.LENGTH_SHORT).show();
+
+        Intent loginIntent = new Intent(this, DashboardActivity.class);
+        startActivity(loginIntent);
     }
 
     public void register(View view) {
         Intent registerIntent = new Intent(this, RegisterActivity.class);
-        EditText inputUsername = findViewById(R.id.username);
-        EditText inputPassword = findViewById(R.id.password);
-        String username = inputUsername.getText().toString();
-        String password = inputPassword.getText().toString();
+        String username = ((EditText) findViewById(R.id.loginUsername)).getText().toString();
+        String password = ((EditText) findViewById(R.id.loginPassword)).getText().toString();
 
         registerIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         registerIntent.putExtra(getString(R.string.EXTRA_PASSWORD), password);
