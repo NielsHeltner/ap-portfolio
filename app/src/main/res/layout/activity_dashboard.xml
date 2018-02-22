@@ -38,6 +38,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:clickable="true"
+        android:onClick="newConversation"
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/colorPrimaryLight"
         app:backgroundTint="@color/colorAccent"
