@@ -19,6 +19,7 @@ import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity {
 
     public static boolean SHOULD_SHOW_WELCOME_ANIM = true;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,15 @@ public class LoginActivity extends AppCompatActivity {
 
         if(SHOULD_SHOW_WELCOME_ANIM) {
             prepareSceneForWelcomeAnim();
-            Handler handler = new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    ObjectAnimator headerFadeInAnim = ObjectAnimator.ofFloat(findViewById(R.id.loginHeader), "alpha", 1f);
+                    headerFadeInAnim.setDuration(1000);
+                    headerFadeInAnim.setStartDelay(400);
+                    headerFadeInAnim.start();
+                }
+            });
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -72,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.loginHeader).setY(displayMetrics.heightPixels / 4);
         ((TextView) findViewById(R.id.loginHeader)).setText(R.string.header_welcome);
+        findViewById(R.id.loginHeader).setAlpha(0f);
         findViewById(R.id.textInputLayoutLoginUsername).setAlpha(0f);
         findViewById(R.id.textInputLayoutLoginPassword).setAlpha(0f);
         findViewById(R.id.loginBtn).setAlpha(0f);
@@ -82,9 +92,10 @@ public class LoginActivity extends AppCompatActivity {
         ObjectAnimator headerMoveAnim = ObjectAnimator.ofFloat(findViewById(R.id.loginHeader), "translationY", 0f);
         headerMoveAnim.setDuration(1500);
         headerMoveAnim.setInterpolator(new TimeInterpolator() {
+            FastOutSlowInInterpolator interpolator = new FastOutSlowInInterpolator();
             @Override
             public float getInterpolation(float input) {
-                return new FastOutSlowInInterpolator().getInterpolation(input);
+                return interpolator.getInterpolation(input);
             }
         });
 
