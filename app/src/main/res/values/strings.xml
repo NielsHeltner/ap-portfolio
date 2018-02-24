@@ -7,11 +7,13 @@
     <string name="no_messages">You have no messages :(</string>
 
     <!-- Strings for login -->
-    <string name="prompt_login_header">Log in to &appname;</string>
+    <string name="header_login">Log in to &appname;</string>
+    <string name="header_welcome">Welcome to &appname;</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="btn_login">Login</string>
     <string name="prompt_register">No account yet? Create an account.</string>
+    <string name="toast_login">Logged in</string>
 
     <!-- Strings for register -->
     <string name="prompt_register_header">Register to &appname;</string>
@@ -23,9 +25,9 @@
 
     <!-- Strings for menus -->
     <string name="btn_logout">Log out</string>
+    <string name="toast_logout">Logged out</string>
 
     <!-- Strings for intent extras -->
     <string name="EXTRA_USERNAME" translatable="false">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD" translatable="false">io.beskedr.PASSWORD</string>
-    <string name="toast_logout">Logged out</string>
 </resources>

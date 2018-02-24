@@ -7,11 +7,13 @@
     <string name="no_messages">Du har ingen beskeder :(</string>
 
     <!-- Strings for login -->
-    <string name="prompt_login_header">Log på &appname;</string>
+    <string name="header_login">Log på &appname;</string>
+    <string name="header_welcome">Velkommen til &appname;</string>
     <string name="prompt_username">Brugernavn</string>
     <string name="prompt_password">Kodeord</string>
     <string name="btn_login">Log på</string>
     <string name="prompt_register">Ingen bruger endnu? Opret en bruger.</string>
+    <string name="toast_login">Logget ind</string>
 
     <!-- Strings for register -->
     <string name="prompt_register_header">Registrer på &appname;</string>
@@ -23,9 +25,9 @@
 
     <!-- Strings for menus -->
     <string name="btn_logout">Log ud</string>
+    <string name="toast_logout">Logget ud</string>
 
     <!-- Strings for intent extras -->
     <string name="EXTRA_USERNAME">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD">io.beskedr.PASSWORD</string>
-    <string name="toast_logout">Logget ud</string>
 </resources>

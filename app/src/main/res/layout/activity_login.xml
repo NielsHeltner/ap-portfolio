@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:fontFamily="sans-serif"
             android:hint="@string/prompt_username"
-            android:singleLine="true" />
+            android:singleLine="true"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -48,7 +48,7 @@
             android:fontFamily="sans-serif"
             android:hint="@string/prompt_password"
             android:inputType="textPassword"
-            android:singleLine="true" />
+            android:singleLine="true"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -87,7 +87,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/open_sans_light"
-        android:text="@string/prompt_login_header"
+        android:text="@string/header_login"
         android:textAppearance="@android:style/TextAppearance.Material.Display1"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayoutLoginUsername"
         app:layout_constraintEnd_toEndOf="parent"
