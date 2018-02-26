@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class DashboardActivity extends AppCompatActivity {
 
     private int messages = 0;
@@ -24,7 +27,10 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void newConversation(View view) {
-        Toast.makeText(getApplicationContext(), "New", Toast.LENGTH_SHORT).show();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+
+        myRef.setValue("Hello, World" + (int) (Math.random() * 100));
     }
 
     @Override

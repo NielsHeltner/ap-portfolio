@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "150544892148",
+    "firebase_url": "https://beskedr.firebaseio.com",
+    "project_id": "beskedr",
+    "storage_bucket": "beskedr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150544892148:android:161867f04d874add",
+        "android_client_info": {
+          "package_name": "io.beskedr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150544892148-vsr6r9jg4lfsprc5lfjm36em4c5rn1tj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.beskedr",
+            "certificate_hash": "83870e537034ac47440d422d81eeccb5f16a84cd"
+          }
+        },
+        {
+          "client_id": "150544892148-rhokt9a5k02i6tshe3tkpapd76vficvh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlxCLT5w7vUiG18Ww8jSlqo7M0fVCvZfM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150544892148-rhokt9a5k02i6tshe3tkpapd76vficvh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
