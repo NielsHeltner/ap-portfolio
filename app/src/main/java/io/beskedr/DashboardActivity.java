@@ -23,8 +23,9 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    public void newConversation(View view) {
-        Toast.makeText(getApplicationContext(), "New", Toast.LENGTH_SHORT).show();
+    public void newContact(View view) {
+        Intent newContactIntent = new Intent(this, NewContactActivity.class);
+        startActivity(newContactIntent);
     }
 
     @Override
