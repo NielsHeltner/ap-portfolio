@@ -30,5 +30,5 @@
     <!-- Strings for intent extras -->
     <string name="EXTRA_USERNAME" translatable="false">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD" translatable="false">io.beskedr.PASSWORD</string>
-    <string name="search_hint">Search...</string>
+    <string name="search_hint">Search for a username...</string>
 </resources>
