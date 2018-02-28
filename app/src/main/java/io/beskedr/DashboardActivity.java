@@ -27,10 +27,6 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void newConversation(View view) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-
-        myRef.setValue("Hello, World" + (int) (Math.random() * 100));
     }
 
     @Override
