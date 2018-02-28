@@ -15,6 +15,9 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DashboardActivity extends AppCompatActivity {
 
     private int messages = 0;
@@ -45,9 +48,9 @@ public class DashboardActivity extends AppCompatActivity {
 
         // specify an adapter (see also next example)
 
-        String[] data = new String[10];
-        for(int i = 0; i < data.length; i++) {
-            data[i] = "Test" + i;
+        List<String> data = new ArrayList<>();
+        for(int i = 0; i < 10; i++) {
+            data.add("Test" + i);
         }
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));

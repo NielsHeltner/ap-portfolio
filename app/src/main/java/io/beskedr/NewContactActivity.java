@@ -2,6 +2,8 @@ package io.beskedr;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -10,14 +12,15 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewContactActivity extends AppCompatActivity  {
 
     // Declare Variables
-    ListView list;
-    ListViewAdapter adapter;
+    RecyclerView list;
+    ContactAdapter adapter;
     SearchView searchView;
-    ArrayList<Username> usernameArrayList = new ArrayList<>();
+    List<String> usernameArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +29,14 @@ public class NewContactActivity extends AppCompatActivity  {
 
 
 
-        list = (ListView) findViewById(R.id.listview);
+        list = findViewById(R.id.searchResults);
+        list.setHasFixedSize(true);
         addMockUsernamesToArrayList();
 
-        adapter = new ListViewAdapter(this, usernameArrayList);
+        RecyclerView.LayoutManager m = new LinearLayoutManager(this);
+        list.setLayoutManager(m);
+
+        adapter = new ContactAdapter(usernameArrayList);
 
         list.setAdapter(adapter);
 
@@ -57,16 +64,16 @@ public class NewContactActivity extends AppCompatActivity  {
     }
 
     private void addMockUsernamesToArrayList() {
-        usernameArrayList.add(new Username("Lars"));
-        usernameArrayList.add(new Username("Niels"));
-        usernameArrayList.add(new Username("Niclas"));
-        usernameArrayList.add(new Username("Anton"));
-        usernameArrayList.add(new Username("Danny"));
-        usernameArrayList.add(new Username("Johnny Depp"));
-        usernameArrayList.add(new Username("FusRoDah"));
-        usernameArrayList.add(new Username("Xavier"));
-        usernameArrayList.add(new Username("BlackWidow"));
-        usernameArrayList.add(new Username("T'Challa"));
-        usernameArrayList.add(new Username("Yeah"));
+        usernameArrayList.add(("Lars"));
+        usernameArrayList.add(("Niels"));
+        usernameArrayList.add(("Niclas"));
+        usernameArrayList.add(("Anton"));
+        usernameArrayList.add(("Danny"));
+        usernameArrayList.add(("Johnny Depp"));
+        usernameArrayList.add(("FusRoDah"));
+        usernameArrayList.add(("Xavier"));
+        usernameArrayList.add(("BlackWidow"));
+        usernameArrayList.add(("T'Challa"));
+        usernameArrayList.add(("Yeah"));
     }
 }
