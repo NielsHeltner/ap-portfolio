@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,17 +34,11 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.contactView);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+        mRecyclerView = findViewById(R.id.contactView);
         mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // specify an adapter (see also next example)
 
         String[] data = new String[10];
         for(int i = 0; i < data.length; i++) {
@@ -52,7 +47,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        mAdapter = new ConversationAdapter(data);
+        mAdapter = new ConversationAdapter(getApplicationContext(), data);
         mRecyclerView.setAdapter(mAdapter);
     }
 
