@@ -1,5 +1,6 @@
 package io.beskedr;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,10 +29,19 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public ConversationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                             int viewType) {
+                                                   int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.contactlist_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        final ViewHolder viewHolder = new ViewHolder(view);
+
+
+        viewHolder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(context, "pos " + viewHolder.getAdapterPosition(), Toast.LENGTH_LONG).show();
+            }
+        });
+
         return viewHolder;
     }
 
