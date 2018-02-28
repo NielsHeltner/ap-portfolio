@@ -10,17 +10,17 @@
     tools:context="io.beskedr.DashboardActivity">
 
     <TextView
-        android:id="@+id/contactLastMessage"
+        android:id="@+id/conversationLastMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="16dp"
         android:text="Jeg synes bare det her er en total mega fed og sindssygt gennemført testbesked"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/contactName"
-        app:layout_constraintTop_toBottomOf="@+id/contactName" />
+        app:layout_constraintStart_toStartOf="@+id/conversationName"
+        app:layout_constraintTop_toBottomOf="@+id/conversationName" />
 
     <TextView
-        android:id="@+id/contactName"
+        android:id="@+id/conversationName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -31,12 +31,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/conversationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="16.55"
         android:textAppearance="@android:style/TextAppearance.Material.Body1"
-        app:layout_constraintBaseline_toBaselineOf="@+id/contactName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/conversationName"
         app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

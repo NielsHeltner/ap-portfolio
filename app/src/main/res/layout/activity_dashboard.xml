@@ -6,8 +6,23 @@
     android:layout_height="match_parent"
     tools:context="io.beskedr.DashboardActivity">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/newBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="newContact"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@color/colorPrimaryLight"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@+id/conversationView"
+        app:layout_constraintEnd_toEndOf="@+id/conversationView" />
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/contactView"
+        android:id="@+id/conversationView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
@@ -21,17 +36,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/newBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:onClick="newContact"
-        android:src="@android:drawable/ic_input_add"
-        android:tint="@color/colorPrimaryLight"
-        app:backgroundTint="@color/colorAccent"
-        tools:layout_editor_absoluteX="312dp"
-        tools:layout_editor_absoluteY="439dp" />
 
 </android.support.constraint.ConstraintLayout>

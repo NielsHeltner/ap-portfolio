@@ -1,5 +1,7 @@
 package io.beskedr;
 
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,47 +9,59 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by burno on 28-02-2018.
- */
+public class ContactAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-public class ContactAdapter extends ConversationAdapter {
+    private Context context;
+    private List<String> shownContent;
+    private List<String> allUsers;
+    private Comparator<String> comparator;
 
-    private List<String> allData;
-
-    public ContactAdapter(List<String> data) {
-        super(data);
-        allData = new ArrayList<>(data);
+    public ContactAdapter(Context context, List<String> content) {
+        this.context = context;
+        shownContent = content;
+        allUsers = new ArrayList<>(content);
     }
 
-    void filter(String charText) {
-        charText = charText.toLowerCase(Locale.getDefault());
-        getData().clear();
+    public void filter(String enteredSearchTerm) {
+        final String searchTerm = enteredSearchTerm.toLowerCase(Locale.getDefault());
+        comparator = new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                return s1.indexOf(searchTerm) - s2.indexOf(searchTerm);
+            }
+        };
 
-        for (String name : allData) {
-            if (name.toLowerCase(Locale.getDefault()).contains(charText)) {
-                getData().add(name); //sorter efter charText's index i name
+        shownContent.clear();
+
+        for (String name : allUsers) {
+            if (name.toLowerCase(Locale.getDefault()).contains(searchTerm)) {
+                shownContent.add(name);
             }
         }
+        Collections.sort(shownContent, comparator);
         notifyDataSetChanged();
     }
 
     @Override
-    public ConversationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                             int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View root = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_view_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(root);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        ((TextView) viewHolder.view.findViewById(R.id.name)).setText(getData().get(position));
+        ((TextView) viewHolder.view.findViewById(R.id.name)).setText(shownContent.get(position));
+    }
 
+    @Override
+    public int getItemCount() {
+        return shownContent.size();
     }
 
 }

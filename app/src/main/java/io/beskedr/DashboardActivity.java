@@ -8,24 +8,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private int messages = 0;
+    private int messages = 1;
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView conversationView;
+    private RecyclerView.Adapter conversationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +33,31 @@ public class DashboardActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.noMessages)).setText("");
         }
 
+        conversationView = findViewById(R.id.conversationView);
+        conversationView.setHasFixedSize(true);
+        conversationView.setLayoutManager(new LinearLayoutManager(this));
+        conversationView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        mRecyclerView = findViewById(R.id.contactView);
-        mRecyclerView.setHasFixedSize(true);
+        List<Conversation> data = new ArrayList<>();
+        for (int i = 0; i < 25; i++) {
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-
-        List<String> data = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
-            data.add("Test" + i);
+            data.add(new Conversation(shuffle("Lars Petri Chrisntensen"),
+                    shuffle("Jeg synes bare det her er en total mega fed og sindssygt gennemført testbesked"),
+                    (int) (Math.random() * 24) + ":" + (int) (Math.random() * 59)));
         }
 
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        conversationAdapter = new ConversationAdapter(getApplicationContext(), data);
+        conversationView.setAdapter(conversationAdapter);
+    }
 
-        mAdapter = new ConversationAdapter(data);
-        mRecyclerView.setAdapter(mAdapter);
+    private String shuffle(String string) {
+        List<String> letters = Arrays.asList(string.split(""));
+        Collections.shuffle(letters);
+        String shuffled = "";
+        for (String letter : letters) {
+            shuffled += letter;
+        }
+        return shuffled.trim();
     }
 
     public void newContact(View view) {
