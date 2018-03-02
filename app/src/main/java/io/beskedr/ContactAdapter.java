@@ -31,7 +31,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ViewHolder> {
         comparator = new Comparator<String>() {
             @Override
             public int compare(String s1, String s2) {
-                return s1.indexOf(searchTerm) - s2.indexOf(searchTerm);
+                int diff = s1.indexOf(searchTerm) - s2.indexOf(searchTerm);
+                if (diff == 0) {
+                    return s1.compareTo(s2);
+                }
+                return diff;
             }
         };
 
