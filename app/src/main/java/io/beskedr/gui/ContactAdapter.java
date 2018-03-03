@@ -1,4 +1,4 @@
-package io.beskedr;
+package io.beskedr.gui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+
+import io.beskedr.R;
 
 public class ContactAdapter extends RecyclerView.Adapter<ViewHolder> {
 

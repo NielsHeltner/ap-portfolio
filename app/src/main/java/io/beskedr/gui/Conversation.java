@@ -1,4 +1,4 @@
-package io.beskedr;
+package io.beskedr.gui;
 
 public class Conversation {
 

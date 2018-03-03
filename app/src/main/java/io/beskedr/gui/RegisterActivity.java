@@ -1,4 +1,4 @@
-package io.beskedr;
+package io.beskedr.gui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,6 +17,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.beskedr.R;
+import io.beskedr.domain.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -34,10 +38,38 @@ public class RegisterActivity extends AppCompatActivity {
         ((EditText) findViewById(R.id.registerPassword)).setText(enteredPassword);
 
         database = FirebaseDatabase.getInstance().getReference("users");
+
+        database.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+                //Log.d("Database", dataSnapshot.getChildrenCount() + "");
+                Log.d("Database", user.username + ", " + user.getUsername() + " s: " + s);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void register(View view) {
-        Map<String, String> userEntry = new HashMap<>();
         Toast.makeText(getApplicationContext(), R.string.toast_register_success, Toast.LENGTH_LONG).show();
 
         Intent registeredIntent = new Intent(this, LoginActivity.class);
@@ -46,25 +78,28 @@ public class RegisterActivity extends AppCompatActivity {
         String name = ((EditText) findViewById(R.id.registerName)).getText().toString();
         String password = ((EditText) findViewById(R.id.registerPassword)).getText().toString();
 
-        userEntry.put("username", username);
-        userEntry.put("email", email);
-        userEntry.put("name", name);
-        userEntry.put("password", password);
+        User newUser = new User(username, email, name, password);
 
-        database.push().setValue(userEntry);
+        //database.push().setValue(newUser);
+        database.child(username).setValue(newUser);
 
-        database.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+        /*database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("Database", dataSnapshot.getChildrenCount() + "");
+                //for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    User user = dataSnapshot.getValue(User.class);
+                    //Log.d("Database", dataSnapshot.getChildrenCount() + "");
+                    Log.d("Database", user.getUsername() + "");
+                //}
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
-
+        });*/
 
         registeredIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         registeredIntent.putExtra(getString(R.string.EXTRA_PASSWORD), password);

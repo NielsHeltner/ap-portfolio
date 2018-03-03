@@ -1,4 +1,4 @@
-package io.beskedr;
+package io.beskedr.gui;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -15,6 +15,8 @@ import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import io.beskedr.R;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package io.beskedr;
+package io.beskedr.gui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.SearchView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.beskedr.R;
 
 public class NewContactActivity extends AppCompatActivity {
 

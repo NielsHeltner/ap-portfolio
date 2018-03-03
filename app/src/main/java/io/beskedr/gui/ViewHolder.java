@@ -1,4 +1,4 @@
-package io.beskedr;
+package io.beskedr.gui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

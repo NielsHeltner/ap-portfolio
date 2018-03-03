@@ -12,7 +12,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".gui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,19 +20,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
-            android:parentActivityName=".LoginActivity">
+            android:name=".gui.RegisterActivity"
+            android:parentActivityName=".gui.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
+                android:value=".gui.LoginActivity" />
         </activity>
-        <activity android:name=".DashboardActivity" />
+        <activity android:name=".gui.DashboardActivity" />
         <activity
-            android:name=".NewContactActivity"
-            android:parentActivityName=".DashboardActivity">
+            android:name=".gui.NewContactActivity"
+            android:parentActivityName=".gui.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DashboardActivity" />
+                android:value=".gui.DashboardActivity" />
         </activity>
     </application>
 

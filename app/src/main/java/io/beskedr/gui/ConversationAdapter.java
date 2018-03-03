@@ -1,4 +1,4 @@
-package io.beskedr;
+package io.beskedr.gui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+
+import io.beskedr.R;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
 

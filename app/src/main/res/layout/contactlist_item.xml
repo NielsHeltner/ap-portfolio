@@ -7,7 +7,7 @@
     android:focusable="true"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    tools:context="io.beskedr.DashboardActivity">
+    tools:context="io.beskedr.gui.DashboardActivity">
 
     <TextView
         android:id="@+id/conversationLastMessage"
