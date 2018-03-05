@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
                 //Log.d("Database", dataSnapshot.getChildrenCount() + "");
-                Log.d("Database", user.username + ", " + user.getUsername() + " s: " + s);
+                Log.d("Database",user.getUsername() + " s: " + s);
             }
 
             @Override
@@ -103,7 +103,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         registeredIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         registeredIntent.putExtra(getString(R.string.EXTRA_PASSWORD), password);
-
         startActivity(registeredIntent);
     }
 

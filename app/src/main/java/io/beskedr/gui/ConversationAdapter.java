@@ -1,6 +1,8 @@
 package io.beskedr.gui;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
         viewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FragmentManager f = ((AppCompatActivity) context).getSupportFragmentManager();
+                f.beginTransaction().replace(R.id.dashboardFragment, new )
                 Toast.makeText(context, "pos " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
             }
         });

@@ -7,7 +7,7 @@
     tools:context="io.beskedr.gui.DashboardActivity">
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/dashboardFragment"
         android:name="io.beskedr.gui.ConversationListFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
