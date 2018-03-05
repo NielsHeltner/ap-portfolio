@@ -1,6 +1,7 @@
 package io.beskedr.gui;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -26,14 +27,20 @@ public class DashboardActivity extends AppCompatActivity {
     private RecyclerView conversationView;
     private RecyclerView.Adapter conversationAdapter;
 
+    private FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        getSupportActionBar().setTitle("anton er grim");
 
         if (messages > 0) {
             ((TextView) findViewById(R.id.noMessages)).setText("");
         }
+
+        fragmentManager = getSupportFragmentManager();
+
 
         conversationView = findViewById(R.id.conversationView);
         conversationView.setHasFixedSize(true);
