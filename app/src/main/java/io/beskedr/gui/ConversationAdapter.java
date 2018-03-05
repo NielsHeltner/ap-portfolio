@@ -34,7 +34,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
             @Override
             public void onClick(View view) {
                 FragmentManager f = ((AppCompatActivity) context).getSupportFragmentManager();
-                f.beginTransaction().replace(R.id.dashboardFragment, new )
+                f.beginTransaction().replace(R.id.dashboardFragment, new ConversationFragment()).addToBackStack(null).commit();
                 Toast.makeText(context, "pos " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
             }
         });
