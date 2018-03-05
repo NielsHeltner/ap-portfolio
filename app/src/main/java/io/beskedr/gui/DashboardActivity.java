@@ -23,50 +23,19 @@ import io.beskedr.R;
 public class DashboardActivity extends AppCompatActivity {
 
     private int messages = 1;
-
-    private RecyclerView conversationView;
-    private RecyclerView.Adapter conversationAdapter;
-
     private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        getSupportActionBar().setTitle("anton er grim");
+        getSupportActionBar().setTitle("anton er flot");
 
         if (messages > 0) {
             ((TextView) findViewById(R.id.noMessages)).setText("");
         }
 
         fragmentManager = getSupportFragmentManager();
-
-
-        conversationView = findViewById(R.id.conversationView);
-        conversationView.setHasFixedSize(true);
-        conversationView.setLayoutManager(new LinearLayoutManager(this));
-        conversationView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        List<Conversation> data = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
-
-            data.add(new Conversation(shuffle("Lars Petri Chrisntensen"),
-                    shuffle("Jeg synes bare det her er en total mega fed og sindssygt gennemført testbesked"),
-                    (int) (Math.random() * 24) + ":" + (int) (Math.random() * 59)));
-        }
-
-        conversationAdapter = new ConversationAdapter(getApplicationContext(), data);
-        conversationView.setAdapter(conversationAdapter);
-    }
-
-    private String shuffle(String string) {
-        List<String> letters = Arrays.asList(string.split(""));
-        Collections.shuffle(letters);
-        String shuffled = "";
-        for (String letter : letters) {
-            shuffled += letter;
-        }
-        return shuffled.trim();
     }
 
     public void newContact(View view) {
