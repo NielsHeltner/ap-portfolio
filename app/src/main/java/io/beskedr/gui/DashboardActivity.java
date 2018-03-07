@@ -22,7 +22,6 @@ import io.beskedr.R;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private int messages = 1;
     private FragmentManager fragmentManager;
 
     @Override
@@ -31,11 +30,8 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         getSupportActionBar().setTitle("anton er flot");
 
-        if (messages > 0) {
-            ((TextView) findViewById(R.id.noMessages)).setText("");
-        }
-
         fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.dashboardFragment, new ConversationListFragment()).addToBackStack(null).commit();
     }
 
     public void newContact(View view) {
