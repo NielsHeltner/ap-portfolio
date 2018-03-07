@@ -18,11 +18,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.beskedr.R;
 import io.beskedr.domain.User;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    @BindView(R.id.registerUsername) EditText usernameField;
+    @BindView(R.id.registerEmail) EditText emailField;
+    @BindView(R.id.registerName) EditText nameField;
+    @BindView(R.id.registerPassword) EditText passwordField;
     private DatabaseReference database;
 
     @Override
@@ -30,12 +36,14 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        ButterKnife.bind(this);
+
         Intent intent = getIntent();
         String enteredUsername = intent.getStringExtra(getString(R.string.EXTRA_USERNAME));
         String enteredPassword = intent.getStringExtra(getString(R.string.EXTRA_PASSWORD));
 
-        ((EditText) findViewById(R.id.registerUsername)).setText(enteredUsername);
-        ((EditText) findViewById(R.id.registerPassword)).setText(enteredPassword);
+        usernameField.setText(enteredUsername);
+        passwordField.setText(enteredPassword);
 
         database = FirebaseDatabase.getInstance().getReference("users");
 
@@ -70,13 +78,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
-        Toast.makeText(getApplicationContext(), R.string.toast_register_success, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), R.string.toast_register_success, Toast.LENGTH_SHORT).show();
 
         Intent registeredIntent = new Intent(this, LoginActivity.class);
-        String username = ((EditText) findViewById(R.id.registerUsername)).getText().toString();
-        String email = ((EditText) findViewById(R.id.registerEmail)).getText().toString();
-        String name = ((EditText) findViewById(R.id.registerName)).getText().toString();
-        String password = ((EditText) findViewById(R.id.registerPassword)).getText().toString();
+        String username = usernameField.getText().toString();
+        String email = emailField.getText().toString();
+        String name = nameField.getText().toString();
+        String password = passwordField.getText().toString();
 
         User newUser = new User(username, email, name, password);
 
