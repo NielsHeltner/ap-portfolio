@@ -31,7 +31,9 @@ public class DashboardActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("anton er flot");
 
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.dashboardFragment, new ConversationListFragment()).commit();
+        if(fragmentManager.getBackStackEntryCount() == 0) {
+            fragmentManager.beginTransaction().replace(R.id.dashboardFragment, new ConversationListFragment()).commit();
+        }
     }
 
     public void newContact(View view) {
