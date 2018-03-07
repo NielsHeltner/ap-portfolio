@@ -1,6 +1,7 @@
 package io.beskedr.gui;
 
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,6 +81,10 @@ public class RegisterActivity extends AppCompatActivity {
     public void register(View view) {
         Toast.makeText(getApplicationContext(), R.string.toast_register_success, Toast.LENGTH_SHORT).show();
 
+        usernameField.setError("fuck du er dum");
+
+        ((TextInputLayout) findViewById(R.id.textInputLayoutRegisterEmail)).setError("lmao wtf");
+
         Intent registeredIntent = new Intent(this, LoginActivity.class);
         String username = usernameField.getText().toString();
         String email = emailField.getText().toString();
@@ -111,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         registeredIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         registeredIntent.putExtra(getString(R.string.EXTRA_PASSWORD), password);
-        startActivity(registeredIntent);
+        //startActivity(registeredIntent);
     }
 
 }
