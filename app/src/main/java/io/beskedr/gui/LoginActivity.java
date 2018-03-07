@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.loginPassword) EditText passwordField;
     @BindView(R.id.textInputLayoutLoginUsername) TextInputLayout textInputLayoutUsername;
     @BindView(R.id.textInputLayoutLoginPassword) TextInputLayout textInputLayoutPassword;
-    @BindView(R.id.loginHeader) EditText loginHeader;
+    @BindView(R.id.loginHeader) TextView loginHeader;
     @BindView(R.id.loginBtn) Button loginBtn;
     @BindView(R.id.noAccount) TextView noAccount;
 
