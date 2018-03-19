@@ -4,23 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:focusable="true"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     tools:context="io.beskedr.gui.DashboardActivity">
 
     <TextView
-        android:id="@+id/conversationLastMessage"
-        android:layout_width="wrap_content"
+        android:id="@+id/conversationListLastMessage"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:paddingBottom="16dp"
         android:text="Jeg synes bare det her er en total mega fed og sindssygt gennemført testbesked"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/conversationName"
-        app:layout_constraintTop_toBottomOf="@+id/conversationName" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/conversationListName" />
 
     <TextView
-        android:id="@+id/conversationName"
+        android:id="@+id/conversationListName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -31,12 +34,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/conversationTime"
+        android:id="@+id/conversationListTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="16.55"
         android:textAppearance="@android:style/TextAppearance.Material.Body1"
-        app:layout_constraintBaseline_toBaselineOf="@+id/conversationName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/conversationListName"
         app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

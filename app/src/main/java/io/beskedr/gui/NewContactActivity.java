@@ -10,13 +10,15 @@ import android.widget.SearchView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.beskedr.R;
 
 public class NewContactActivity extends AppCompatActivity {
 
-    private RecyclerView contactView;
+    @BindView(R.id.searchResults) RecyclerView contactView;
     private ContactAdapter contactAdapter;
-    private SearchView searchView;
+    @BindView(R.id.searchView) SearchView searchView;
     private List<String> usernames = new ArrayList<>();
 
     @Override
@@ -24,7 +26,8 @@ public class NewContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_contact);
 
-        contactView = findViewById(R.id.searchResults);
+        ButterKnife.bind(this);
+
         contactView.setHasFixedSize(true);
         addMockUsernamesToArrayList();
         contactView.setLayoutManager(new LinearLayoutManager(this));
@@ -33,7 +36,6 @@ public class NewContactActivity extends AppCompatActivity {
 
         contactView.setAdapter(contactAdapter);
 
-        searchView = findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -1,6 +1,7 @@
 package io.beskedr.gui;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,45 +23,19 @@ import io.beskedr.R;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private int messages = 1;
-
-    private RecyclerView conversationView;
-    private RecyclerView.Adapter conversationAdapter;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_dashboard);
+        getSupportActionBar().setTitle("anton er flot");
 
-        if (messages > 0) {
-            ((TextView) findViewById(R.id.noMessages)).setText("");
+        fragmentManager = getSupportFragmentManager();
+        if(fragmentManager.getBackStackEntryCount() == 0) {
+            fragmentManager.beginTransaction().replace(R.id.dashboardFragment, new ConversationListFragment()).commit();
         }
-
-        conversationView = findViewById(R.id.conversationView);
-        conversationView.setHasFixedSize(true);
-        conversationView.setLayoutManager(new LinearLayoutManager(this));
-        conversationView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        List<Conversation> data = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
-
-            data.add(new Conversation(shuffle("Lars Petri Chrisntensen"),
-                    shuffle("Jeg synes bare det her er en total mega fed og sindssygt gennemført testbesked"),
-                    (int) (Math.random() * 24) + ":" + (int) (Math.random() * 59)));
-        }
-
-        conversationAdapter = new ConversationAdapter(getApplicationContext(), data);
-        conversationView.setAdapter(conversationAdapter);
-    }
-
-    private String shuffle(String string) {
-        List<String> letters = Arrays.asList(string.split(""));
-        Collections.shuffle(letters);
-        String shuffled = "";
-        for (String letter : letters) {
-            shuffled += letter;
-        }
-        return shuffled.trim();
     }
 
     public void newContact(View view) {

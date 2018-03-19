@@ -1,19 +1,19 @@
-package io.beskedr.gui;
+package io.beskedr.domain;
 
-public class Conversation {
+public class ConversationMessage {
 
-    private String name;
+    private User sender;
     private String message;
     private String time;
 
-    public Conversation(String name, String message, String time) {
-        this.name = name;
+    public ConversationMessage(User sender, String message, String time) {
+        this.sender = sender;
         this.message = message;
         this.time = time;
     }
 
-    public String getName() {
-        return name;
+    public User getSender() {
+        return sender;
     }
 
     public String getMessage() {
