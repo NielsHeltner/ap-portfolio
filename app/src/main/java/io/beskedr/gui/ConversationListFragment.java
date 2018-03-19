@@ -2,6 +2,7 @@ package io.beskedr.gui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,8 +26,7 @@ public class ConversationListFragment extends Fragment {
     private RecyclerView.Adapter conversationListAdapter;
     private int messages = 1;
 
-    public ConversationListFragment() {
-    }
+    public ConversationListFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,8 @@ public class ConversationListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
         View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
 
         if (messages > 0) {

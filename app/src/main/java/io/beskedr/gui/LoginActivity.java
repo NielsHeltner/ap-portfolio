@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), R.string.toast_login, Toast.LENGTH_SHORT).show();
         Intent loginIntent = new Intent(this, DashboardActivity.class);
         startActivity(loginIntent);
+        finish();
     }
 
     public void register(View view) {

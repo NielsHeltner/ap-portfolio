@@ -52,11 +52,16 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
             case R.id.btnLogout:
                 Toast.makeText(getApplicationContext(), R.string.toast_logout, Toast.LENGTH_LONG).show();
                 Intent logoutIntent = new Intent(this, LoginActivity.class);
                 startActivity(logoutIntent);
                 break;
+            default:
+                return super.onOptionsItemSelected(menuItem);
         }
         return true;
     }
