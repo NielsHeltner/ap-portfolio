@@ -23,6 +23,13 @@
     <string name="toast_register_error">Fejl under registrering</string>
     <string name="toast_register_success">Registreret</string>
 
+    <!-- Strings for registration errors -->
+    <string name="error_registration_username_taken">Brugernavn er allerede taget</string>
+    <string name="error_registration_username_too_short">Brugernavn er for kort</string>
+    <string name="error_registration_email_invalid">Email er ikke gyldig</string>
+    <string name="error_registration_name_too_short">Navn er for kort</string>
+    <string name="error_registration_password_too_short">Password er for kort</string>
+
     <!-- Strings for menus -->
     <string name="btn_logout">Log ud</string>
     <string name="toast_logout">Logget ud</string>
@@ -30,5 +37,5 @@
     <!-- Strings for intent extras -->
     <string name="EXTRA_USERNAME">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD">io.beskedr.PASSWORD</string>
-    <string name="search_hint">Søg efter brugernavn...</string>
+    <string name="search_hint">Søg efter brugernavn…</string>
 </resources>
