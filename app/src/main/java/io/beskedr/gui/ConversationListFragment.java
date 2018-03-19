@@ -16,11 +16,13 @@ import java.util.Collections;
 import java.util.List;
 
 import io.beskedr.R;
+import io.beskedr.domain.ConversationMessage;
+import io.beskedr.domain.User;
 
 public class ConversationListFragment extends Fragment {
 
-    private RecyclerView conversationView;
-    private RecyclerView.Adapter conversationAdapter;
+    private RecyclerView conversationListView;
+    private RecyclerView.Adapter conversationListAdapter;
     private int messages = 1;
 
     public ConversationListFragment() {
@@ -39,20 +41,21 @@ public class ConversationListFragment extends Fragment {
             ((TextView) view.findViewById(R.id.noMessages)).setText("");
         }
 
-        conversationView = view.findViewById(R.id.conversationListView);
-        conversationView.setHasFixedSize(true);
-        conversationView.setLayoutManager(new LinearLayoutManager(getContext()));
-        conversationView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+        conversationListView = view.findViewById(R.id.conversationListView);
+        conversationListView.setHasFixedSize(true);
+        conversationListView.setLayoutManager(new LinearLayoutManager(getContext()));
+        conversationListView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
-        List<Conversation> data = new ArrayList<>();
+        User lars = new User("Lars Petri Chrisntensen", "a", "a", "a");
+        List<ConversationMessage> data = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
-            data.add(new Conversation(shuffle("Lars Petri Chrisntensen"),
+            data.add(new ConversationMessage(lars,
                     shuffle("Jeg synes bare det her er en total mega fed og sindssygt gennemført testbesked"),
                     (int) (Math.random() * 24) + ":" + (int) (Math.random() * 59)));
         }
 
-        conversationAdapter = new ConversationAdapter(getContext(), data);
-        conversationView.setAdapter(conversationAdapter);
+        conversationListAdapter = new ConversationListAdapter(getContext(), data);
+        conversationListView.setAdapter(conversationListAdapter);
 
         return view;
     }
