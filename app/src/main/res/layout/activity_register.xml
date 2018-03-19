@@ -28,6 +28,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif"
                 android:hint="@string/prompt_username"
+                android:imeOptions="flagNoExtractUi"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
@@ -50,6 +51,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif"
                 android:hint="@string/prompt_email"
+                android:imeOptions="flagNoExtractUi"
                 android:inputType="textEmailAddress"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
@@ -71,6 +73,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif"
                 android:hint="@string/prompt_name"
+                android:imeOptions="flagNoExtractUi"
                 android:inputType="textPersonName"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
@@ -93,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:hint="@string/prompt_password"
+                android:imeOptions="flagNoExtractUi"
                 android:inputType="textPassword"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
