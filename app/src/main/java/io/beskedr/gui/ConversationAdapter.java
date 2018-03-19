@@ -1,11 +1,14 @@
 package io.beskedr.gui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private static final int VIEW_TYPE_MESSAGE_SENT = 0;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 1;
+    private static final int RIGHT_MARGIN = 72;
 
     private Context context;
     private List<ConversationMessage> shownContent;
@@ -29,14 +33,18 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View root = null;
+        int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+        int maxWidth = screenWidth - dpToPixels(RIGHT_MARGIN);
 
         if (viewType == VIEW_TYPE_MESSAGE_SENT) {
             root = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_conversation_blob_sent, parent, false);
+            ((TextView) root.findViewById(R.id.conversationSentMessage)).setMaxWidth(maxWidth);
         }
         else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
             root = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_conversation_blob_received, parent, false);
+            ((TextView) root.findViewById(R.id.conversationReceivedMessage)).setMaxWidth(maxWidth);
         }
         ViewHolder viewHolder = new ViewHolder(root);
         return viewHolder;
@@ -72,6 +80,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public int getItemCount() {
         return shownContent.size();
+    }
+
+    private int dpToPixels(int dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale);
     }
 
 }

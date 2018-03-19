@@ -44,9 +44,13 @@ public class ConversationFragment extends Fragment {
         data.add(new ConversationMessage(you, "hej", "12:01"));
         data.add(new ConversationMessage(me, "Hvordan går det?", "12:03"));
         data.add(new ConversationMessage(you, "jamen jeg har det egentligt rigtig godt i dag men så kom jeg til at møde anton og fandt ud hvor flot han egentlig var og så fik jeg bare sådan rigtig mange mangemangemange mange mindreværdskomplekser men så fandt jeg ud af han faktisk var grim og så fik jeg det godt igen", "12:28"));
+        data.add(new ConversationMessage(me, "jamen jeg har det egentligt rigtig godt i dag men så kom jeg til at møde anton og fandt ud hvor flot han egentlig var og så fik jeg bare sådan rigtig mange mangemangemange mange mindreværdskomplekser men så fandt jeg ud af han faktisk var grim og så fik jeg det godt igen", "12:28"));
+        data.add(new ConversationMessage(you, "jamen jeg har det egentligt rigtig godt i dag men så kom jeg til at møde anton og fandt ud hvor flot han egentlig var og så fik jeg bare sådan rigtig mange mangemangemange mange mindreværdskomplekser men så fandt jeg ud af han faktisk var grim og så fik jeg det godt igen", "12:28"));
 
         conversationAdapter = new ConversationAdapter(getContext(), data);
         conversationMessageView.setAdapter(conversationAdapter);
+
+        conversationMessageView.scrollToPosition(data.size() - 1);
 
         return view;
     }
