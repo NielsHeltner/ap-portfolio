@@ -1,14 +1,11 @@
 package io.beskedr.gui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -40,8 +37,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
             root = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_conversation_blob_sent, parent, false);
             ((TextView) root.findViewById(R.id.conversationSentMessage)).setMaxWidth(maxWidth);
-        }
-        else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
+        } else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
             root = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_conversation_blob_received, parent, false);
             ((TextView) root.findViewById(R.id.conversationReceivedMessage)).setMaxWidth(maxWidth);
@@ -64,7 +60,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         ConversationMessage message = shownContent.get(position);
 
-        switch(viewHolder.getItemViewType()) {
+        switch (viewHolder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
                 ((TextView) viewHolder.view.findViewById(R.id.conversationSentMessage)).setText(message.getMessage());
                 ((TextView) viewHolder.view.findViewById(R.id.conversationSentTime)).setText(message.getTime());

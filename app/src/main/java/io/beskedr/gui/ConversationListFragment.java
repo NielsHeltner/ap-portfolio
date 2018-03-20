@@ -26,7 +26,8 @@ public class ConversationListFragment extends Fragment {
     private RecyclerView.Adapter conversationListAdapter;
     private int messages = 1;
 
-    public ConversationListFragment() {}
+    public ConversationListFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class ConversationListFragment extends Fragment {
         conversationListView.setLayoutManager(new LinearLayoutManager(getContext()));
         conversationListView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
-        User lars = new User("Lars Petri Chrisntensen", "a", "a", "a");
+        User lars = new User("Lars", "lars@christensen.net", "Lars Christensen", "123");
         List<ConversationMessage> data = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
             data.add(new ConversationMessage(lars,

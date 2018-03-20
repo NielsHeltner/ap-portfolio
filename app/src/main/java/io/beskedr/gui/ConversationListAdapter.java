@@ -1,6 +1,7 @@
 package io.beskedr.gui;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +36,15 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
             @Override
             public void onClick(View view) {
                 FragmentManager f = ((AppCompatActivity) context).getSupportFragmentManager();
-                f.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.dashboardFragment, new ConversationFragment()).addToBackStack(null).commit();
+                ConversationFragment cf = new ConversationFragment();
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable(context.getString(R.string.EXTRA_OTHER_USER), shownContent.get(viewHolder.getAdapterPosition()).getSender());
+                cf.setArguments(bundle);
+
+                f.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                        .replace(R.id.dashboardFragment, cf).addToBackStack(null).commit();
+
                 Toast.makeText(context, "pos " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -45,7 +54,7 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        ((TextView) viewHolder.view.findViewById(R.id.conversationListName)).setText(shownContent.get(position).getSender().getUsername());
+        ((TextView) viewHolder.view.findViewById(R.id.conversationListName)).setText(shownContent.get(position).getSender().getName());
         ((TextView) viewHolder.view.findViewById(R.id.conversationListLastMessage)).setText(shownContent.get(position).getMessage());
         ((TextView) viewHolder.view.findViewById(R.id.conversationListTime)).setText(shownContent.get(position).getTime());
     }

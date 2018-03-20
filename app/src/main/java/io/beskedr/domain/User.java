@@ -1,6 +1,8 @@
 package io.beskedr.domain;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String username;
     private String email;
@@ -30,6 +32,11 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
 }

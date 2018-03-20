@@ -1,23 +1,14 @@
 package io.beskedr.gui;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import io.beskedr.R;
 
@@ -30,10 +21,9 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_dashboard);
-        getSupportActionBar().setTitle("anton er flot");
 
         fragmentManager = getSupportFragmentManager();
-        if(fragmentManager.getBackStackEntryCount() == 0) {
+        if (fragmentManager.getBackStackEntryCount() == 0) {
             fragmentManager.beginTransaction().replace(R.id.dashboardFragment, new ConversationListFragment()).commit();
         }
     }
@@ -59,6 +49,7 @@ public class DashboardActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), R.string.toast_logout, Toast.LENGTH_LONG).show();
                 Intent logoutIntent = new Intent(this, LoginActivity.class);
                 startActivity(logoutIntent);
+                finish();
                 break;
             default:
                 return super.onOptionsItemSelected(menuItem);
