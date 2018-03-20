@@ -38,5 +38,6 @@
     <string name="EXTRA_USERNAME">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD">io.beskedr.PASSWORD</string>
     <string name="EXTRA_OTHER_USER">io.beskedr.OTHER_USER</string>
-    <string name="search_hint">Søg efter brugernavn…</string>
+    <string name="prompt_search">Søg efter brugernavn…</string>
+    <string name="prompt_message">Indtast en besked…</string>
 </resources>

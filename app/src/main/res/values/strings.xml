@@ -40,7 +40,8 @@
     <string name="EXTRA_OTHER_USER" translatable="false">io.beskedr.OTHER_USER</string>
 
 
-    <string name="search_hint">Search for a username…</string>
+    <string name="prompt_search">Search for a username…</string>
+    <string name="prompt_message">Enter a message…</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
