@@ -23,6 +23,10 @@ import io.beskedr.domain.UserManager;
 
 public class ConversationFragment extends Fragment {
 
+    private static int TEST_FOR_MESSAGES = 0;
+    private final User me = new User("Niels", "niels@heltner.net", "Niels Heltner", "123");
+    private final User you = new User("Lars", "lars@christensen.net", "Lars Christensen", "123");
+
     private RecyclerView conversationMessageView;
     private RecyclerView.Adapter conversationAdapter;
     private List<ConversationMessage> conversationMessages;
@@ -44,10 +48,10 @@ public class ConversationFragment extends Fragment {
         conversationMessageView.setHasFixedSize(true);
         conversationMessageView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        User me = new User("Niels", "niels@heltner.net", "Niels Heltner", "123");
-        UserManager.getInstance().setCurrentUser(me);
-        User you = new User("Lars", "lars@christensen.net", "Lars Christensen", "123");
 
+
+
+        UserManager.getInstance().setCurrentUser(me);
         conversationMessages = new ArrayList<>();
 
         conversationMessages.add(new ConversationMessage(me, "Hej!", "12:00"));
@@ -74,8 +78,15 @@ public class ConversationFragment extends Fragment {
 
     public void sendMessage() {
         Toast.makeText(getContext(), "send message", Toast.LENGTH_SHORT).show();
+        if(TEST_FOR_MESSAGES % 2 == 0) {
+            conversationMessages.add(new ConversationMessage(me, "test", "14:05"));
+        }
+        else {
+            conversationMessages.add(new ConversationMessage(you, "test", "14:05"));
+        }
+        TEST_FOR_MESSAGES++;
 
-        conversationMessages.add(new ConversationMessage(UserManager.getInstance().getCurrentUser(), "test", "14:05"));
+
         updateRecyclerViewPan();
     }
 

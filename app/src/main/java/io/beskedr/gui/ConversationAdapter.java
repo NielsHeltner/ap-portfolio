@@ -1,5 +1,6 @@
 package io.beskedr.gui;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,7 +28,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private Context context;
     private List<ConversationMessage> conversationMessages;
-    private int lastPosition = -1;
 
     public ConversationAdapter(Context context, List<ConversationMessage> content) {
         this.context = context;
@@ -69,39 +69,31 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         switch (viewHolder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
-                ((TextView) viewHolder.view.findViewById(R.id.conversationSentMessage)).setText(message.getMessage());
-                ((TextView) viewHolder.view.findViewById(R.id.conversationSentTime)).setText(message.getTime());
+                TextView sentMessage = viewHolder.view.findViewById(R.id.conversationSentMessage);
+                TextView sentTime = viewHolder.view.findViewById(R.id.conversationSentTime);
 
+                sentMessage.setText(message.getMessage());
+                sentTime.setText(message.getTime());
 
-                //Animation animation = AnimationUtils.loadAnimation(context, R.anim.enter_from_bottom);
-
-                //OvershootInterpolator interpolator = new OvershootInterpolator(2);
-                //animation.setInterpolator(interpolator);
-
-                //((TextView) viewHolder.view.findViewById(R.id.conversationSentMessage)).startAnimation(animation);
-
-                if (position > lastPosition) {
-                    ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                    anim.setStartOffset(500);
-                    anim.setDuration(350);
-                    anim.setInterpolator(new OvershootInterpolator(3));
-                    viewHolder.view.findViewById(R.id.conversationSentMessage).startAnimation(anim);
-
-                    Animation anim2 = AnimationUtils.loadAnimation(context, R.anim.enter_from_right);
-                    //TranslateAnimation anim2 = new TranslateAnimation()
-                    anim2.setStartOffset(250);
-                    anim2.setDuration(350);
-                    anim2.setInterpolator(new OvershootInterpolator(3));
-                    viewHolder.view.findViewById(R.id.conversationSentTime).startAnimation(anim2);
-
-
-                    lastPosition = position;
+                if (position == conversationMessages.size() - 1) {
+                    animate(sentMessage, R.anim.enter_scale_overshoot, 500);
+                    animate(sentTime, R.anim.enter_from_right_overshoot, 550);
                 }
                 break;
             case VIEW_TYPE_MESSAGE_RECEIVED:
-                ((TextView) viewHolder.view.findViewById(R.id.conversationReceivedName)).setText(message.getSender().getUsername());
-                ((TextView) viewHolder.view.findViewById(R.id.conversationReceivedMessage)).setText(message.getMessage());
-                ((TextView) viewHolder.view.findViewById(R.id.conversationReceivedTime)).setText(message.getTime());
+                TextView receivedMessage = viewHolder.view.findViewById(R.id.conversationReceivedMessage);
+                TextView receivedTime = viewHolder.view.findViewById(R.id.conversationReceivedTime);
+                TextView receivedName = viewHolder.view.findViewById(R.id.conversationReceivedName);
+
+                receivedMessage.setText(message.getMessage());
+                receivedTime.setText(message.getTime());
+                receivedName.setText(message.getSender().getUsername());
+
+                if (position == conversationMessages.size() - 1) {
+                    animate(receivedMessage, R.anim.enter_scale_overshoot, 500);
+                    animate(receivedTime, R.anim.enter_from_left_overshoot, 550);
+                    animate(receivedName, R.anim.enter_from_bottom_overshoot, 550);
+                }
                 break;
         }
     }
@@ -129,6 +121,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
     private int dpToPixels(int dp) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale);
+    }
+
+    private void animate(View view, int animId, int startOffset) {
+        Animation anim = AnimationUtils.loadAnimation(context, animId);
+        anim.setStartOffset(startOffset);
+        view.startAnimation(anim);
     }
 
 }
