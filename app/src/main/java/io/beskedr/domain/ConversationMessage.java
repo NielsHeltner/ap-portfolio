@@ -1,8 +1,10 @@
 package io.beskedr.domain;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.Exclude;
 
-public class ConversationMessage {
+public class ConversationMessage implements Comparable<ConversationMessage> {
 
     @Exclude
     private User sender;
@@ -56,5 +58,10 @@ public class ConversationMessage {
         long hour = (time / (1000 * 60 * 60)) % 24;
 
         return String.format("%02d:%02d", hour, minute);
+    }
+
+    @Override
+    public int compareTo(@NonNull ConversationMessage o) {
+        return (int) (time - o.time);
     }
 }

@@ -24,8 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 
 import io.beskedr.R;
 import io.beskedr.domain.ConversationMessage;
@@ -53,6 +55,7 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TreeSet<Integer> t = new TreeSet<>();
         //UserManager.getInstance().setCurrentUser(me);
         conversationMessages = new ArrayList<>();
         other = (User) getArguments().getSerializable(getString(R.string.EXTRA_OTHER_USER));
@@ -71,12 +74,14 @@ public class ConversationFragment extends Fragment {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         final ConversationMessage conversationMessage = dataSnapshot.getValue(ConversationMessage.class);
 
+
                         usersRef.child(conversationMessage.getUser()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 User sender = dataSnapshot.getValue(User.class);
                                 conversationMessage.setSender(sender);
                                 addMessage(conversationMessage);
+                                Log.d("Firebase", conversationMessage.getUser() + ": " + conversationMessage.getMessage());
                             }
 
                             @Override
@@ -151,7 +156,8 @@ public class ConversationFragment extends Fragment {
 
     public void sendMessage() {
         Toast.makeText(getContext(), "send message", Toast.LENGTH_SHORT).show();
-        String message = ((EditText) getView().findViewById(R.id.conversationEditText)).getText().toString();
+        EditText messageBox = getView().findViewById(R.id.conversationEditText);
+        String message = messageBox.getText().toString().trim();
         messagesRef.child(convoId).push().setValue(new ConversationMessage(UserManager.getInstance().getCurrentUser().getUsername(), message, new Date().getTime())).addOnCompleteListener(new OnCompleteListener<Void>() {
 
             @Override
@@ -159,6 +165,7 @@ public class ConversationFragment extends Fragment {
                 Log.d("Firebase", "message uploaded");
             }
         });
+        messageBox.setText("");
         /*if (TEST_FOR_MESSAGES % 2 == 0) {
             conversationMessages.add(new ConversationMessage(me, "test", 1521653517378L));
         } else {
@@ -172,6 +179,8 @@ public class ConversationFragment extends Fragment {
 
     private void addMessage(ConversationMessage message) {
         conversationMessages.add(message);
+        Collections.sort(conversationMessages);
+        //Log.d("Firebase", message.getUser() + ": " + message.getMessage());
         updateRecyclerViewPan();
     }
 
