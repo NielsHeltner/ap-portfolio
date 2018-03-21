@@ -5,6 +5,7 @@
 
     <!-- Strings for dashboard -->
     <string name="no_messages">You have no messages :(</string>
+    <string name="loading_messages">Loading messages…</string>
 
     <!-- Strings for login -->
     <string name="header_login">Log in to &appname;</string>
@@ -43,6 +44,7 @@
     <string name="EXTRA_USERNAME" translatable="false">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD" translatable="false">io.beskedr.PASSWORD</string>
     <string name="EXTRA_OTHER_USER" translatable="false">io.beskedr.OTHER_USER</string>
+    <string name="EXTRA_NEW_CONTACT_USER" translatable="false">io.beskedr.NEW_CONTACT_USER</string>
 
 
     <string name="prompt_search">Search for a username…</string>

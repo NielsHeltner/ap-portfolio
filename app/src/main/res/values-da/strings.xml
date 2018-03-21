@@ -5,6 +5,7 @@
 
     <!-- Strings for dashboard -->
     <string name="no_messages">Du har ingen beskeder :(</string>
+    <string name="loading_messages">Indlæser beskeder…</string>
 
     <!-- Strings for login -->
     <string name="header_login">Log på &appname;</string>
@@ -43,6 +44,7 @@
     <string name="EXTRA_USERNAME">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD">io.beskedr.PASSWORD</string>
     <string name="EXTRA_OTHER_USER">io.beskedr.OTHER_USER</string>
+    <string name="EXTRA_NEW_CONTACT_USER">io.beskedr.NEW_CONTACT_USER</string>
     <string name="prompt_search">Søg efter brugernavn…</string>
     <string name="prompt_message">Indtast en besked…</string>
 </resources>
