@@ -119,7 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
                 /*for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User user = dataSnapshot.getValue(User.class);
                     //Log.d("Database", dataSnapshot.getChildrenCount() + "");
-                    Log.d("Database", user.getUsername() + "");
+                    Log.d("Database", user.getUser() + "");
                 }*/
             }
 

@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -18,13 +19,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.beskedr.R;
+import io.beskedr.domain.User;
+import io.beskedr.domain.UserManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static boolean SHOULD_SHOW_WELCOME_ANIM = true;
+    public static boolean SHOULD_SHOW_WELCOME_ANIM = false;
 
     @BindView(R.id.loginUsername) EditText usernameField;
     @BindView(R.id.loginPassword) EditText passwordField;
@@ -66,6 +71,8 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View view) {
         Toast.makeText(getApplicationContext(), R.string.toast_login, Toast.LENGTH_SHORT).show();
         Intent loginIntent = new Intent(this, DashboardActivity.class);
+        User me = new User("Niels", "niels@heltner.net", "Niels Heltner", "123");
+        UserManager.getInstance().setCurrentUser(me);
         startActivity(loginIntent);
         finish();
     }

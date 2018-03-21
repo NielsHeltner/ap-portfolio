@@ -73,7 +73,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
                 TextView sentTime = viewHolder.view.findViewById(R.id.conversationSentTime);
 
                 sentMessage.setText(message.getMessage());
-                sentTime.setText(message.getTime());
+                sentTime.setText(message.getTimeFormatted());
 
                 if (position == conversationMessages.size() - 1) {
                     animate(sentMessage, R.anim.enter_scale_overshoot, 500);
@@ -86,7 +86,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
                 TextView receivedName = viewHolder.view.findViewById(R.id.conversationReceivedName);
 
                 receivedMessage.setText(message.getMessage());
-                receivedTime.setText(message.getTime());
+                receivedTime.setText(message.getTimeFormatted());
                 receivedName.setText(message.getSender().getUsername());
 
                 if (position == conversationMessages.size() - 1) {

@@ -6,25 +6,41 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.beskedr.R;
+import io.beskedr.domain.Conversation;
 import io.beskedr.domain.ConversationMessage;
 import io.beskedr.domain.User;
+import io.beskedr.domain.UserManager;
 
 public class ConversationListFragment extends Fragment {
 
     private RecyclerView conversationListView;
     private RecyclerView.Adapter conversationListAdapter;
     private int messages = 1;
+    private DatabaseReference usersRef;
+    private DatabaseReference userContactsRef;
+    private DatabaseReference conversationsRef;
+    private List<ConversationMessage> conversations;
 
     public ConversationListFragment() {
     }
@@ -32,6 +48,63 @@ public class ConversationListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        conversations = new ArrayList<>();
+        usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+        userContactsRef = usersRef.child(UserManager.getInstance().getCurrentUser().getUsername()).child("contacts");
+        conversationsRef = FirebaseDatabase.getInstance().getReference().child("conversations");
+
+        userContactsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String userId = dataSnapshot.getKey().toString();
+                final String conversationId = dataSnapshot.getValue().toString();
+
+                usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        final User u = dataSnapshot.getValue(User.class);
+
+                        conversationsRef.child(conversationId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Conversation c = dataSnapshot.getValue(Conversation.class);
+                                addConversation(new ConversationMessage(u, c));
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -49,28 +122,14 @@ public class ConversationListFragment extends Fragment {
         conversationListView.setLayoutManager(new LinearLayoutManager(getContext()));
         conversationListView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
-        User lars = new User("Lars", "lars@christensen.net", "Lars Christensen", "123");
-        List<ConversationMessage> data = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
-            data.add(new ConversationMessage(lars,
-                    shuffle("Jeg synes bare det her er en total mega fed og sindssygt gennemført testbesked"),
-                    (int) (Math.random() * 24) + ":" + (int) (Math.random() * 59)));
-        }
-
-        conversationListAdapter = new ConversationListAdapter(getContext(), data);
+        conversationListAdapter = new ConversationListAdapter(getContext(), conversations);
         conversationListView.setAdapter(conversationListAdapter);
 
         return view;
     }
 
-    private String shuffle(String string) {
-        List<String> letters = Arrays.asList(string.split(""));
-        Collections.shuffle(letters);
-        String shuffled = "";
-        for (String letter : letters) {
-            shuffled += letter;
-        }
-        return shuffled.trim();
+    private void addConversation(ConversationMessage conversation) {
+        conversations.add(conversation);
+        conversationListAdapter.notifyItemInserted(conversations.size() - 1);
     }
-
 }
