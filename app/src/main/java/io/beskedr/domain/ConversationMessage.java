@@ -20,10 +20,6 @@ public class ConversationMessage implements Comparable<ConversationMessage> {
         this.time = time;
     }
 
-    public ConversationMessage(User sender, Conversation convo) {
-        this(sender, convo.getLastMessage(), convo.getTime());
-    }
-
     public ConversationMessage(String user, String message, long time) {
         this.user = user;
         this.message = message;

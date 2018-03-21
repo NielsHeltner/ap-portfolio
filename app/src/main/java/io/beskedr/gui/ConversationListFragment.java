@@ -20,11 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.beskedr.R;
 import io.beskedr.domain.Conversation;
@@ -39,8 +35,8 @@ public class ConversationListFragment extends Fragment {
     private int messages = 1;
     private DatabaseReference usersRef;
     private DatabaseReference userContactsRef;
-    private DatabaseReference conversationsRef;
-    private List<ConversationMessage> conversations;
+    private DatabaseReference messagesRef;
+    private List<Conversation> conversations;
 
     public ConversationListFragment() {
     }
@@ -51,24 +47,40 @@ public class ConversationListFragment extends Fragment {
         conversations = new ArrayList<>();
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
         userContactsRef = usersRef.child(UserManager.getInstance().getCurrentUser().getUsername()).child("contacts");
-        conversationsRef = FirebaseDatabase.getInstance().getReference().child("conversations");
+        messagesRef = FirebaseDatabase.getInstance().getReference().child("messages");
 
         userContactsRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String userId = dataSnapshot.getKey().toString();
-                final String conversationId = dataSnapshot.getValue().toString();
+                String userId = dataSnapshot.getKey();
+                final String conversationId = dataSnapshot.getValue(String.class);
 
                 usersRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        final User u = dataSnapshot.getValue(User.class);
+                        final User user = dataSnapshot.getValue(User.class);
 
-                        conversationsRef.child(conversationId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        messagesRef.child(conversationId).limitToLast(1).addChildEventListener(new ChildEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Conversation c = dataSnapshot.getValue(Conversation.class);
-                                addConversation(new ConversationMessage(u, c));
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                ConversationMessage lastMessage = dataSnapshot.getValue(ConversationMessage.class);
+                                Conversation conversation = new Conversation(user, lastMessage);
+                                addOrUpdateConversation(conversation);
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
                             }
 
                             @Override
@@ -128,8 +140,20 @@ public class ConversationListFragment extends Fragment {
         return view;
     }
 
-    private void addConversation(ConversationMessage conversation) {
-        conversations.add(conversation);
+    private void addOrUpdateConversation(Conversation conversation) {
+        if(!conversationContainsUser(conversation)) {
+            conversations.add(conversation);
+        }
         conversationListAdapter.notifyItemInserted(conversations.size() - 1);
+    }
+
+    private boolean conversationContainsUser(Conversation conversation) {
+        for(Conversation c : conversations) {
+            if(c.getOther().equals(conversation.getOther())) {
+                c.update(conversation);
+                return true;
+            }
+        }
+        return false;
     }
 }

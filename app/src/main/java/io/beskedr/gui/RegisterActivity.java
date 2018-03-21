@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(dataSnapshot.hasChild(username)) {
                     showErrorMessage(usernameLayout, getString(R.string.error_registration_username_taken));
                 }
-                else if(username.length() < 4) {
+                else if(username.length() < 1) {
                     showErrorMessage(usernameLayout, getString(R.string.error_registration_username_too_short));
                 }
                 if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {

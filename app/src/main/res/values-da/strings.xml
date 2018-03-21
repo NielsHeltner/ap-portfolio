@@ -14,6 +14,11 @@
     <string name="btn_login">Log på</string>
     <string name="prompt_register">Ingen bruger endnu? Opret en bruger.</string>
     <string name="toast_login">Logget ind</string>
+    <string name="login_wait">Logger ind…</string>
+
+    <!-- Strings for login errors -->
+    <string name="error_login_username_does_not_exist">Brugernavnet eksisterer ikke.</string>
+    <string name="error_login_password_wrong">Passwordet er forkert.</string>
 
     <!-- Strings for register -->
     <string name="prompt_register_header">Registrer på &appname;</string>

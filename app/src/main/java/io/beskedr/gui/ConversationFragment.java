@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import io.beskedr.R;
+import io.beskedr.domain.Conversation;
 import io.beskedr.domain.ConversationMessage;
 import io.beskedr.domain.User;
 import io.beskedr.domain.UserManager;
@@ -45,6 +46,7 @@ public class ConversationFragment extends Fragment {
     private DatabaseReference usersRef;
     private DatabaseReference otherUserRef;
     private DatabaseReference messagesRef;
+    private DatabaseReference convosRef;
     private List<ConversationMessage> conversationMessages; //sorter med en comparator -- treeset e.l.
     private User other;
     private String convoId;
@@ -55,8 +57,6 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TreeSet<Integer> t = new TreeSet<>();
-        //UserManager.getInstance().setCurrentUser(me);
         conversationMessages = new ArrayList<>();
         other = (User) getArguments().getSerializable(getString(R.string.EXTRA_OTHER_USER));
 
@@ -67,13 +67,12 @@ public class ConversationFragment extends Fragment {
         otherUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                convoId = dataSnapshot.getValue().toString();
+                convoId = dataSnapshot.getValue(String.class);
 
                 messagesRef.child(convoId).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         final ConversationMessage conversationMessage = dataSnapshot.getValue(ConversationMessage.class);
-
 
                         usersRef.child(conversationMessage.getUser()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -81,7 +80,6 @@ public class ConversationFragment extends Fragment {
                                 User sender = dataSnapshot.getValue(User.class);
                                 conversationMessage.setSender(sender);
                                 addMessage(conversationMessage);
-                                Log.d("Firebase", conversationMessage.getUser() + ": " + conversationMessage.getMessage());
                             }
 
                             @Override
@@ -155,7 +153,6 @@ public class ConversationFragment extends Fragment {
     }
 
     public void sendMessage() {
-        Toast.makeText(getContext(), "send message", Toast.LENGTH_SHORT).show();
         EditText messageBox = getView().findViewById(R.id.conversationEditText);
         String message = messageBox.getText().toString().trim();
         messagesRef.child(convoId).push().setValue(new ConversationMessage(UserManager.getInstance().getCurrentUser().getUsername(), message, new Date().getTime())).addOnCompleteListener(new OnCompleteListener<Void>() {
