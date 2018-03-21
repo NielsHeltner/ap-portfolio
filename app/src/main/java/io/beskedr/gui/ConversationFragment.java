@@ -2,6 +2,7 @@ package io.beskedr.gui;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.beskedr.R;
@@ -38,8 +43,9 @@ public class ConversationFragment extends Fragment {
     private DatabaseReference usersRef;
     private DatabaseReference otherUserRef;
     private DatabaseReference messagesRef;
-    private List<ConversationMessage> conversationMessages;
+    private List<ConversationMessage> conversationMessages; //sorter med en comparator -- treeset e.l.
     private User other;
+    private String convoId;
 
     public ConversationFragment() {
     }
@@ -47,7 +53,7 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UserManager.getInstance().setCurrentUser(me);
+        //UserManager.getInstance().setCurrentUser(me);
         conversationMessages = new ArrayList<>();
         other = (User) getArguments().getSerializable(getString(R.string.EXTRA_OTHER_USER));
 
@@ -58,7 +64,7 @@ public class ConversationFragment extends Fragment {
         otherUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String convoId = dataSnapshot.getValue().toString();
+                convoId = dataSnapshot.getValue().toString();
 
                 messagesRef.child(convoId).addChildEventListener(new ChildEventListener() {
                     @Override
@@ -145,15 +151,23 @@ public class ConversationFragment extends Fragment {
 
     public void sendMessage() {
         Toast.makeText(getContext(), "send message", Toast.LENGTH_SHORT).show();
-        if (TEST_FOR_MESSAGES % 2 == 0) {
+        String message = ((EditText) getView().findViewById(R.id.conversationEditText)).getText().toString();
+        messagesRef.child(convoId).push().setValue(new ConversationMessage(UserManager.getInstance().getCurrentUser().getUsername(), message, new Date().getTime())).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d("Firebase", "message uploaded");
+            }
+        });
+        /*if (TEST_FOR_MESSAGES % 2 == 0) {
             conversationMessages.add(new ConversationMessage(me, "test", 1521653517378L));
         } else {
             conversationMessages.add(new ConversationMessage(you, "test", 1521653517378L));
         }
-        TEST_FOR_MESSAGES++;
+        TEST_FOR_MESSAGES++;*/
 
 
-        updateRecyclerViewPan();
+        //updateRecyclerViewPan();
     }
 
     private void addMessage(ConversationMessage message) {

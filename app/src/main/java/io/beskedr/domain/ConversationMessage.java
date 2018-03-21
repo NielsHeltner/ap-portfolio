@@ -1,7 +1,10 @@
 package io.beskedr.domain;
 
+import com.google.firebase.database.Exclude;
+
 public class ConversationMessage {
 
+    @Exclude
     private User sender;
     private String user;
     private String message;
@@ -19,6 +22,12 @@ public class ConversationMessage {
         this(sender, convo.getLastMessage(), convo.getTime());
     }
 
+    public ConversationMessage(String user, String message, long time) {
+        this.user = user;
+        this.message = message;
+        this.time = time;
+    }
+
     public void setSender(User sender) {
         this.sender = sender;
     }
@@ -27,6 +36,7 @@ public class ConversationMessage {
         return user;
     }
 
+    @Exclude
     public User getSender() {
         return sender;
     }
@@ -39,6 +49,7 @@ public class ConversationMessage {
         return time;
     }
 
+    @Exclude
     public String getTimeFormatted() {
         long second = (time / 1000) % 60;
         long minute = (time / (1000 * 60)) % 60;
