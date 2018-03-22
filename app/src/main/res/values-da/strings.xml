@@ -37,6 +37,9 @@
     <string name="error_registration_name_too_short">Navn er for kort</string>
     <string name="error_registration_password_too_short">Password er for kort</string>
 
+    <!-- Strings for convos -->
+    <string name="error_convo_send_message">Beskeden kunne ikke sendes.</string>
+
     <!-- Strings for menus -->
     <string name="btn_logout">Log ud</string>
     <string name="toast_logout">Logget ud</string>
