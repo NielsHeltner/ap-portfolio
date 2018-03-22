@@ -1,7 +1,5 @@
 package io.beskedr.gui;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,13 +10,12 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +25,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.beskedr.R;
@@ -38,7 +33,7 @@ import io.beskedr.domain.UserManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static boolean SHOULD_SHOW_WELCOME_ANIM = false;
+    public static boolean SHOULD_SHOW_WELCOME_ANIM = true;
 
     @BindView(R.id.loginUsername)
     EditText usernameField;
@@ -55,7 +50,8 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.noAccount)
     TextView noAccount;
 
-    private Handler handler = new Handler();
+    private Handler animationScheduler = new Handler();
+    private LinearInterpolator interpolator = new LinearInterpolator();
     private DatabaseReference database;
     private ProgressDialog progress;
 
@@ -70,13 +66,13 @@ public class LoginActivity extends AppCompatActivity {
 
         if (SHOULD_SHOW_WELCOME_ANIM) {
             prepareSceneForWelcomeAnim();
-            handler.post(new Runnable() {
+            animationScheduler.post(new Runnable() {
                 @Override
                 public void run() {
-                    animateHeader();
+                    fadeInHeader();
                 }
             });
-            handler.postDelayed(new Runnable() {
+            animationScheduler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     animate();
@@ -179,44 +175,28 @@ public class LoginActivity extends AppCompatActivity {
         noAccount.setAlpha(0f);
     }
 
-    private void animateHeader() {
-        ObjectAnimator headerFadeInAnim = ObjectAnimator.ofFloat(loginHeader, "alpha", 1f);
-        headerFadeInAnim.setDuration(1000);
-        headerFadeInAnim.setStartDelay(400);
-        headerFadeInAnim.start();
+    private void fadeInHeader() {
+        fadeIn(loginHeader, 400);
     }
 
     private void animate() {
-        ObjectAnimator headerMoveAnim = ObjectAnimator.ofFloat(loginHeader, "translationY", 0f);
-        headerMoveAnim.setDuration(1500);
-        headerMoveAnim.setInterpolator(new TimeInterpolator() {
+        loginHeader.animate().translationY(0f).setDuration(1500).setInterpolator(new TimeInterpolator() {
             FastOutSlowInInterpolator interpolator = new FastOutSlowInInterpolator();
-
             @Override
             public float getInterpolation(float input) {
+                Log.d("anim", "translationY: " + input);
                 return interpolator.getInterpolation(input);
             }
         });
 
-        ObjectAnimator usernameFadeAnim = ObjectAnimator.ofFloat(usernameLayout, "alpha", 1f);
-        usernameFadeAnim.setDuration(1000);
-        usernameFadeAnim.setStartDelay(600);
+        fadeIn(usernameLayout, 600);
+        fadeIn(passwordLayout, 900);
+        fadeIn(loginBtn, 1800);
+        fadeIn(noAccount, 1800);
 
-        ObjectAnimator passwordFadeAnim = ObjectAnimator.ofFloat(passwordLayout, "alpha", 1f);
-        passwordFadeAnim.setDuration(1000);
-        passwordFadeAnim.setStartDelay(900);
-
-        ObjectAnimator btnFadeAnim = ObjectAnimator.ofFloat(loginBtn, "alpha", 1f);
-        btnFadeAnim.setDuration(1000);
-        btnFadeAnim.setStartDelay(1800);
-
-        ObjectAnimator noAccountFadeAnim = ObjectAnimator.ofFloat(noAccount, "alpha", 1f);
-        noAccountFadeAnim.setDuration(1000);
-        noAccountFadeAnim.setStartDelay(1800);
-
-        Animation headerTextAnim = new AlphaAnimation(1.0f, 0.1f);
-        headerTextAnim.setDuration(200);
-        headerTextAnim.setStartOffset(200);
+        Animation headerTextAnim = new AlphaAnimation(1.0f, 0.02f);
+        headerTextAnim.setDuration(400);
+        headerTextAnim.setStartOffset(300);
         headerTextAnim.setRepeatCount(1);
         headerTextAnim.setRepeatMode(Animation.REVERSE);
         headerTextAnim.setAnimationListener(new Animation.AnimationListener() {
@@ -233,12 +213,11 @@ public class LoginActivity extends AppCompatActivity {
                 loginHeader.setText(R.string.header_login);
             }
         });
-
-        AnimatorSet animSet = new AnimatorSet();
-        animSet.play(headerMoveAnim).with(usernameFadeAnim).with(passwordFadeAnim).with(btnFadeAnim).with(noAccountFadeAnim);
-
-        animSet.start();
         loginHeader.startAnimation(headerTextAnim);
+    }
+
+    private void fadeIn(View view, int startOffset) {
+        view.animate().alpha(1f).setStartDelay(startOffset).setDuration(1000).setInterpolator(interpolator);
     }
 
 }
