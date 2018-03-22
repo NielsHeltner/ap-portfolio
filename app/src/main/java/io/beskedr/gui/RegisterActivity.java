@@ -88,10 +88,10 @@ public class RegisterActivity extends AppCompatActivity {
         clearErrorMessages();
 
         final Intent registeredIntent = new Intent(this, LoginActivity.class);
-        final String username = usernameField.getText().toString();
-        final String email = emailField.getText().toString();
-        final String name = nameField.getText().toString();
-        final String password = passwordField.getText().toString();
+        final String username = usernameField.getText().toString().trim();
+        final String email = emailField.getText().toString().trim();
+        final String name = nameField.getText().toString().trim();
+        final String password = passwordField.getText().toString().trim();
 
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
