@@ -44,8 +44,6 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
 
                 f.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .replace(R.id.dashboardFragment, cf).addToBackStack(null).commit();
-
-                Toast.makeText(context, "pos " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
             }
         });
 
