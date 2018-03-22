@@ -22,14 +22,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.beskedr.R;
 import io.beskedr.domain.User;
+import io.beskedr.domain.UserManager;
 
 public class NewContactActivity extends AppCompatActivity {
 
-    @BindView(R.id.searchResults) RecyclerView contactView;
+    @BindView(R.id.searchResults)
+    RecyclerView contactView;
     private NewContactAdapter newContactAdapter;
-    @BindView(R.id.searchView) SearchView searchView;
+    @BindView(R.id.searchView)
+    SearchView searchView;
     private List<User> users = new ArrayList<>();
+    private List<String> contactNames = new ArrayList<>();
     private DatabaseReference usersRef;
+    private DatabaseReference userContactsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +47,12 @@ public class NewContactActivity extends AppCompatActivity {
         contactView.setLayoutManager(new LinearLayoutManager(this));
 
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+        userContactsRef = usersRef.child(UserManager.getInstance().getCurrentUser().getUsername()).child("contacts");
 
         usersRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                users.add(user);
-                updateRecyclerView();
+                users.add(dataSnapshot.getValue(User.class));
             }
 
             @Override
@@ -72,7 +76,34 @@ public class NewContactActivity extends AppCompatActivity {
             }
         });
 
-        newContactAdapter = new NewContactAdapter(getApplicationContext(), users);
+        userContactsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                contactNames.add(dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        newContactAdapter = new NewContactAdapter(this, users, contactNames);
 
         contactView.setAdapter(newContactAdapter);
 

@@ -184,7 +184,6 @@ public class LoginActivity extends AppCompatActivity {
             FastOutSlowInInterpolator interpolator = new FastOutSlowInInterpolator();
             @Override
             public float getInterpolation(float input) {
-                Log.d("anim", "translationY: " + input);
                 return interpolator.getInterpolation(input);
             }
         });
@@ -196,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Animation headerTextAnim = new AlphaAnimation(1.0f, 0.02f);
         headerTextAnim.setDuration(400);
-        headerTextAnim.setStartOffset(300);
+        headerTextAnim.setStartOffset(250);
         headerTextAnim.setRepeatCount(1);
         headerTextAnim.setRepeatMode(Animation.REVERSE);
         headerTextAnim.setAnimationListener(new Animation.AnimationListener() {

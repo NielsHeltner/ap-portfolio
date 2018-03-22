@@ -40,6 +40,8 @@
     <!-- Strings for convos -->
     <string name="error_convo_send_message">Beskeden kunne ikke sendes.</string>
 
+    <string name="contact_added">tilføjet til kontakter.</string>
+
     <!-- Strings for menus -->
     <string name="btn_logout">Log ud</string>
     <string name="toast_logout">Logget ud</string>

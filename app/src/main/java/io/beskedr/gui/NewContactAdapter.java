@@ -1,16 +1,19 @@
 package io.beskedr.gui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,17 +33,19 @@ import io.beskedr.domain.UserManager;
 
 public class NewContactAdapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private Context context;
+    private Activity context;
     private List<User> shownContent;
     private List<User> allUsers;
+    private List<String> contactNames;
     private Comparator<User> comparator;
     private DatabaseReference usersRef;
     private DatabaseReference messagesRef;
 
-    public NewContactAdapter(Context context, List<User> users) {
+    public NewContactAdapter(Activity context, List<User> users, List<String> contactNames) {
         this.context = context;
         shownContent = new ArrayList<>(users);
         allUsers = users;
+        this.contactNames = contactNames;
 
         usersRef = FirebaseDatabase.getInstance().getReference().child("users");
         messagesRef = FirebaseDatabase.getInstance().getReference().child("messages");
@@ -62,7 +67,9 @@ public class NewContactAdapter extends RecyclerView.Adapter<ViewHolder> {
         shownContent.clear();
 
         for (User user : allUsers) {
-            if (user.getUsername().toLowerCase(Locale.getDefault()).contains(searchTerm)) {
+            if (user.getUsername().toLowerCase(Locale.getDefault()).contains(searchTerm)
+                    && !UserManager.getInstance().getCurrentUser().getUsername().equals(user.getUsername())
+                    && !contactNames.contains(user.getUsername())) {
                 shownContent.add(user);
             }
         }
@@ -79,17 +86,14 @@ public class NewContactAdapter extends RecyclerView.Adapter<ViewHolder> {
         viewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "pos " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                Bundle bundle = new Bundle();
-
                 User selected = shownContent.get(viewHolder.getAdapterPosition());
-
-                bundle.putSerializable(context.getString(R.string.EXTRA_NEW_CONTACT_USER), selected);
-                //set bundlet på intent
 
                 String convoId = messagesRef.push().getKey();
                 messagesRef.child(convoId).push().setValue(new ConversationMessage().setSender(selected));
                 usersRef.child(UserManager.getInstance().getCurrentUser().getUsername()).child("contacts").child(selected.getUsername()).setValue(convoId);
+
+                Toast.makeText(context, selected.getUsername() + " " + context.getString(R.string.contact_added), Toast.LENGTH_SHORT).show();
+                context.finish();
             }
         });
 
