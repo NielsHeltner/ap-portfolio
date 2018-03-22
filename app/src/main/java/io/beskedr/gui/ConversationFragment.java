@@ -145,6 +145,12 @@ public class ConversationFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.app_name));
+    }
+
     public void sendMessage() {
         EditText messageBox = getView().findViewById(R.id.conversationEditText);
         String message = messageBox.getText().toString().trim();
