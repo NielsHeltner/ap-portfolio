@@ -1,7 +1,5 @@
 package io.beskedr.domain;
 
-import android.support.annotation.NonNull;
-
 import com.google.firebase.database.Exclude;
 
 public class Conversation {

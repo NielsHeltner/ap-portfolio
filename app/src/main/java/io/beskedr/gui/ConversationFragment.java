@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -27,27 +28,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeSet;
 
 import io.beskedr.R;
-import io.beskedr.domain.Conversation;
 import io.beskedr.domain.ConversationMessage;
 import io.beskedr.domain.User;
 import io.beskedr.domain.UserManager;
 
 public class ConversationFragment extends Fragment {
 
-    private static int TEST_FOR_MESSAGES = 0;
-    private final User me = new User("Niels", "niels@heltner.net", "Niels Heltner", "123");
-    private final User you = new User("Lars", "lars@christensen.net", "Lars Christensen", "123");
-
     private RecyclerView conversationMessageView;
     private RecyclerView.Adapter conversationAdapter;
     private DatabaseReference usersRef;
     private DatabaseReference otherUserRef;
     private DatabaseReference messagesRef;
-    private DatabaseReference convosRef;
-    private List<ConversationMessage> conversationMessages; //sorter med en comparator -- treeset e.l.
+    private List<ConversationMessage> conversationMessages;
     private User other;
     private String convoId;
 
@@ -73,6 +67,9 @@ public class ConversationFragment extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         final ConversationMessage conversationMessage = dataSnapshot.getValue(ConversationMessage.class);
+                        if(conversationMessage.getTime() == 0) {
+                            return;
+                        }
 
                         usersRef.child(conversationMessage.getUser()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -129,14 +126,13 @@ public class ConversationFragment extends Fragment {
         conversationMessageView = view.findViewById(R.id.conversationMessageView);
         conversationMessageView.setHasFixedSize(true);
         conversationMessageView.setLayoutManager(new LinearLayoutManager(getContext()));
-/*
-        conversationMessages.add(new ConversationMessage(me, "Hej!", 1521653517378L));
-        conversationMessages.add(new ConversationMessage(you, "hej", 1521653517378L));
-        conversationMessages.add(new ConversationMessage(me, "Hvordan går det?", 1521653517378L));
-        conversationMessages.add(new ConversationMessage(you, "jamen jeg har det egentligt rigtig godt i dag men så kom jeg til at møde anton og fandt ud hvor flot han egentlig var og så fik jeg bare sådan rigtig mange mangemangemange mange mindreværdskomplekser men så fandt jeg ud af han faktisk var grim og så fik jeg det godt igen", 1521653517378L));
-        conversationMessages.add(new ConversationMessage(me, "jamen jeg har det egentligt rigtig godt i dag men så kom jeg til at møde anton og fandt ud hvor flot han egentlig var og så fik jeg bare sådan rigtig mange mangemangemange mange mindreværdskomplekser men så fandt jeg ud af han faktisk var grim og så fik jeg det godt igen", 1521653517378L));
-        conversationMessages.add(new ConversationMessage(you, "jamen jeg har det egentligt rigtig godt i dag men så kom jeg til at møde anton og fandt ud hvor flot han egentlig var og så fik jeg bare sådan rigtig mange mangemangemange mange mindreværdskomplekser men så fandt jeg ud af han faktisk var grim og så fik jeg det godt igen", 1521653517378L));
-*/
+        conversationMessageView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                conversationMessageView.scrollToPosition(conversationMessages.size() - 1);
+            }
+        });
+
         conversationAdapter = new ConversationAdapter(getContext(), conversationMessages);
         conversationMessageView.setAdapter(conversationAdapter);
 
@@ -155,29 +151,18 @@ public class ConversationFragment extends Fragment {
     public void sendMessage() {
         EditText messageBox = getView().findViewById(R.id.conversationEditText);
         String message = messageBox.getText().toString().trim();
-        messagesRef.child(convoId).push().setValue(new ConversationMessage(UserManager.getInstance().getCurrentUser().getUsername(), message, new Date().getTime())).addOnCompleteListener(new OnCompleteListener<Void>() {
-
+        messagesRef.child(convoId).push().setValue(new ConversationMessage(UserManager.getInstance().getCurrentUser().getUsername(), message, new Date().getTime())).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.d("Firebase", "message uploaded");
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), R.string.error_convo_send_message, Toast.LENGTH_SHORT).show();
             }
         });
         messageBox.setText("");
-        /*if (TEST_FOR_MESSAGES % 2 == 0) {
-            conversationMessages.add(new ConversationMessage(me, "test", 1521653517378L));
-        } else {
-            conversationMessages.add(new ConversationMessage(you, "test", 1521653517378L));
-        }
-        TEST_FOR_MESSAGES++;*/
-
-
-        //updateRecyclerViewPan();
     }
 
     private void addMessage(ConversationMessage message) {
         conversationMessages.add(message);
         Collections.sort(conversationMessages);
-        //Log.d("Firebase", message.getUser() + ": " + message.getMessage());
         updateRecyclerViewPan();
     }
 

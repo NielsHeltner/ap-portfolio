@@ -2,13 +2,12 @@ package io.beskedr.gui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import io.beskedr.domain.UserManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import io.beskedr.R;
@@ -20,7 +19,6 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_dashboard);
 
         fragmentManager = getSupportFragmentManager();
@@ -32,6 +30,14 @@ public class DashboardActivity extends AppCompatActivity {
     public void newContact(View view) {
         Intent newContactIntent = new Intent(this, NewContactActivity.class);
         startActivity(newContactIntent);
+    }
+
+    public void logout() {
+        Toast.makeText(getApplicationContext(), R.string.toast_logout, Toast.LENGTH_LONG).show();
+        Intent logoutIntent = new Intent(this, LoginActivity.class);
+        UserManager.getInstance().setCurrentUser(null);
+        startActivity(logoutIntent);
+        finish();
     }
 
     @Override
@@ -47,10 +53,7 @@ public class DashboardActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.btnLogout:
-                Toast.makeText(getApplicationContext(), R.string.toast_logout, Toast.LENGTH_LONG).show();
-                Intent logoutIntent = new Intent(this, LoginActivity.class);
-                startActivity(logoutIntent);
-                finish();
+                logout();
                 break;
             default:
                 return super.onOptionsItemSelected(menuItem);

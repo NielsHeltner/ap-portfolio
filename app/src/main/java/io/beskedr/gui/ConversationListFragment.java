@@ -58,12 +58,10 @@ public class ConversationListFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         final User user = dataSnapshot.getValue(User.class);
-                        Log.d("Firebase", "inde i usersref");
 
                         messagesRef.child(conversationId).limitToLast(1).addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                Log.d("Firebase", "inde i messagesref");
                                 ConversationMessage lastMessage = dataSnapshot.getValue(ConversationMessage.class);
                                 Conversation conversation = new Conversation(user, lastMessage);
                                 addOrUpdateConversation(conversation);
