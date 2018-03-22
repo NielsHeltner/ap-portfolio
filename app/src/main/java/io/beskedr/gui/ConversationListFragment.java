@@ -32,7 +32,6 @@ public class ConversationListFragment extends Fragment {
 
     private RecyclerView conversationListView;
     private RecyclerView.Adapter conversationListAdapter;
-    private int messages = 1;
     private DatabaseReference usersRef;
     private DatabaseReference userContactsRef;
     private DatabaseReference messagesRef;
@@ -59,10 +58,12 @@ public class ConversationListFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         final User user = dataSnapshot.getValue(User.class);
+                        Log.d("Firebase", "inde i usersref");
 
                         messagesRef.child(conversationId).limitToLast(1).addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                Log.d("Firebase", "inde i messagesref");
                                 ConversationMessage lastMessage = dataSnapshot.getValue(ConversationMessage.class);
                                 Conversation conversation = new Conversation(user, lastMessage);
                                 addOrUpdateConversation(conversation);
@@ -125,10 +126,6 @@ public class ConversationListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
 
-        if (messages > 0) {
-            ((TextView) view.findViewById(R.id.noMessages)).setText("");
-        }
-
         conversationListView = view.findViewById(R.id.conversationListView);
         conversationListView.setHasFixedSize(true);
         conversationListView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -141,15 +138,15 @@ public class ConversationListFragment extends Fragment {
     }
 
     private void addOrUpdateConversation(Conversation conversation) {
-        if(!conversationContainsUser(conversation)) {
+        if (!conversationContainsUser(conversation)) {
             conversations.add(conversation);
         }
         conversationListAdapter.notifyItemInserted(conversations.size() - 1);
     }
 
     private boolean conversationContainsUser(Conversation conversation) {
-        for(Conversation c : conversations) {
-            if(c.getOther().equals(conversation.getOther())) {
+        for (Conversation c : conversations) {
+            if (c.getOther().equals(conversation.getOther())) {
                 c.update(conversation);
                 return true;
             }

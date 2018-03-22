@@ -8,9 +8,9 @@ public class ConversationMessage implements Comparable<ConversationMessage> {
 
     @Exclude
     private User sender;
-    private String user;
-    private String message;
-    private long time;
+    private String user = "";
+    private String message = "";
+    private long time = 0;
 
     public ConversationMessage() {}
 
@@ -26,8 +26,10 @@ public class ConversationMessage implements Comparable<ConversationMessage> {
         this.time = time;
     }
 
-    public void setSender(User sender) {
+    public ConversationMessage setSender(User sender) {
         this.sender = sender;
+        this.user = sender.getUsername();
+        return this;
     }
 
     public String getUser() {

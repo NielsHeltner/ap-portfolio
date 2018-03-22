@@ -11,6 +11,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +24,9 @@ import java.util.List;
 import java.util.Locale;
 
 import io.beskedr.R;
+import io.beskedr.domain.ConversationMessage;
 import io.beskedr.domain.User;
+import io.beskedr.domain.UserManager;
 
 public class NewContactAdapter extends RecyclerView.Adapter<ViewHolder> {
 
@@ -26,11 +34,16 @@ public class NewContactAdapter extends RecyclerView.Adapter<ViewHolder> {
     private List<User> shownContent;
     private List<User> allUsers;
     private Comparator<User> comparator;
+    private DatabaseReference usersRef;
+    private DatabaseReference messagesRef;
 
     public NewContactAdapter(Context context, List<User> users) {
         this.context = context;
         shownContent = new ArrayList<>(users);
         allUsers = users;
+
+        usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+        messagesRef = FirebaseDatabase.getInstance().getReference().child("messages");
     }
 
     public void filter(String enteredSearchTerm) {
@@ -69,8 +82,14 @@ public class NewContactAdapter extends RecyclerView.Adapter<ViewHolder> {
                 Toast.makeText(context, "pos " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
 
-                bundle.putSerializable(context.getString(R.string.EXTRA_NEW_CONTACT_USER), shownContent.get(viewHolder.getAdapterPosition()));
+                User selected = shownContent.get(viewHolder.getAdapterPosition());
+
+                bundle.putSerializable(context.getString(R.string.EXTRA_NEW_CONTACT_USER), selected);
                 //set bundlet på intent
+
+                String convoId = messagesRef.push().getKey();
+                messagesRef.child(convoId).push().setValue(new ConversationMessage().setSender(selected));
+                usersRef.child(UserManager.getInstance().getCurrentUser().getUsername()).child("contacts").child(selected.getUsername()).setValue(convoId);
             }
         });
 

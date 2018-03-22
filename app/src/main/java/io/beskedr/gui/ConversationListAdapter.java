@@ -55,9 +55,12 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        ((TextView) viewHolder.view.findViewById(R.id.conversationListName)).setText(shownContent.get(position).getOther().getName());
-        ((TextView) viewHolder.view.findViewById(R.id.conversationListLastMessage)).setText(shownContent.get(position).getLastMessageOwner() + ": " + shownContent.get(position).getMessage());
-        ((TextView) viewHolder.view.findViewById(R.id.conversationListTime)).setText(shownContent.get(position).getTimeFormatted());
+        Conversation c = shownContent.get(position);
+        ((TextView) viewHolder.view.findViewById(R.id.conversationListName)).setText(c.getOther().getName());
+        if(c.getTime() != 0) {
+            ((TextView) viewHolder.view.findViewById(R.id.conversationListLastMessage)).setText(c.getLastMessageOwner() + ": " + shownContent.get(position).getMessage());
+            ((TextView) viewHolder.view.findViewById(R.id.conversationListTime)).setText(c.getTimeFormatted());
+        }
     }
 
     @Override
