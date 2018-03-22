@@ -28,6 +28,7 @@
     <string name="btn_register">Registrer</string>
     <string name="toast_register_error">Fejl under registrering</string>
     <string name="toast_register_success">Registreret</string>
+    <string name="register_wait">Registrerer…</string>
 
     <!-- Strings for registration errors -->
     <string name="error_registration_username_taken">Brugernavn er allerede taget</string>

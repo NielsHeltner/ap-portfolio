@@ -1,5 +1,6 @@
 package io.beskedr.gui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.registerPassword) EditText passwordField;
     @BindView(R.id.textInputLayoutRegisterPassword) TextInputLayout passwordLayout;
     private DatabaseReference database;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,39 +56,14 @@ public class RegisterActivity extends AppCompatActivity {
         passwordField.setText(enteredPassword);
 
         database = FirebaseDatabase.getInstance().getReference("users");
-
-        database.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                //Log.d("Database", dataSnapshot.getChildrenCount() + "");
-                Log.d("Database",user.getUsername() + " s: " + s);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        progress = new ProgressDialog(this);
+        progress.setMessage(getString(R.string.register_wait));
+        progress.setCancelable(false);
     }
 
     public void register(View view) {
         clearErrorMessages();
+        progress.show();
 
         final Intent registeredIntent = new Intent(this, LoginActivity.class);
         final String username = usernameField.getText().toString().trim();
@@ -113,14 +91,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else {
                     User newUser = new User(username, email, name, password);
-                    createNewUser(newUser);
-                    startLoginActivity(registeredIntent, newUser);
+                    createNewUser(newUser, registeredIntent);
                 }
-                /*for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    User user = dataSnapshot.getValue(User.class);
-                    //Log.d("Database", dataSnapshot.getChildrenCount() + "");
-                    Log.d("Database", user.getUser() + "");
-                }*/
             }
 
             @Override
@@ -130,18 +102,24 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void createNewUser(User newUser) {
-        database.child(newUser.getUsername()).setValue(newUser);
+    private void createNewUser(final User newUser, final Intent intent) {
+        database.child(newUser.getUsername()).setValue(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                startLoginActivity(newUser, intent);
+            }
+        });
         Toast.makeText(getApplicationContext(), R.string.toast_register_success, Toast.LENGTH_SHORT).show();
     }
 
-    private void startLoginActivity(Intent intent, User newUser) {
+    private void startLoginActivity(User newUser, Intent intent) {
         intent.putExtra(getString(R.string.EXTRA_USERNAME), newUser.getUsername());
         intent.putExtra(getString(R.string.EXTRA_PASSWORD), newUser.getPassword());
         startActivity(intent);
     }
 
     private void showErrorMessage(TextInputLayout view, String errorMessage) {
+        progress.dismiss();
         view.setError(errorMessage);
     }
 

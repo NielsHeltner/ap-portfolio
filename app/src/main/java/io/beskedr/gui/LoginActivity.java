@@ -108,10 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (dataSnapshot.child("password").getValue(String.class).equals(password)) {
                             progress.dismiss();
                             User user = dataSnapshot.getValue(User.class);
-                            UserManager.getInstance().setCurrentUser(user);
-                            Toast.makeText(getApplicationContext(), R.string.toast_login, Toast.LENGTH_SHORT).show();
-                            startActivity(loginIntent);
-                            finish();
+                            logUserIn(user, loginIntent);
                         } else {
                             showErrorMessage(passwordLayout, getString(R.string.error_login_password_wrong));
                         }
@@ -130,13 +127,20 @@ public class LoginActivity extends AppCompatActivity {
 
     public void register(View view) {
         Intent registerIntent = new Intent(this, RegisterActivity.class);
-        String username = usernameField.getText().toString();
-        String password = passwordField.getText().toString();
+        String username = usernameField.getText().toString().trim();
+        String password = passwordField.getText().toString().trim();
 
         registerIntent.putExtra(getString(R.string.EXTRA_USERNAME), username);
         registerIntent.putExtra(getString(R.string.EXTRA_PASSWORD), password);
 
         startActivity(registerIntent);
+    }
+
+    private void logUserIn(User user, Intent intent) {
+        UserManager.getInstance().setCurrentUser(user);
+        Toast.makeText(getApplicationContext(), R.string.toast_login, Toast.LENGTH_SHORT).show();
+        startActivity(intent);
+        finish();
     }
 
     private void showErrorMessage(TextInputLayout view, String errorMessage) {
