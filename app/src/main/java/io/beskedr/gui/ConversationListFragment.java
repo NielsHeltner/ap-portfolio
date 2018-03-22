@@ -46,7 +46,7 @@ public class ConversationListFragment extends Fragment {
         userContactsRef = usersRef.child(UserManager.getInstance().getCurrentUser().getUsername()).child("contacts");
         messagesRef = FirebaseDatabase.getInstance().getReference().child("messages");
 
-        userContactsRef.addChildEventListener(new ChildEventListener() {
+        userContactsRef.addChildEventListener(new ChildEventListener() { //Loop through the logged in user's contacts, and look up the convo for each contact
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String userId = dataSnapshot.getKey();

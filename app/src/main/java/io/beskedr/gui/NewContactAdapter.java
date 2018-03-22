@@ -82,6 +82,7 @@ public class NewContactAdapter extends RecyclerView.Adapter<ViewHolder> {
                 String convoId = messagesRef.push().getKey();
                 messagesRef.child(convoId).push().setValue(new ConversationMessage().setSender(selected));
                 usersRef.child(UserManager.getInstance().getCurrentUser().getUsername()).child("contacts").child(selected.getUsername()).setValue(convoId);
+                usersRef.child(selected.getUsername()).child("contacts").child(UserManager.getInstance().getCurrentUser().getUsername()).setValue(convoId);
 
                 Toast.makeText(context, selected.getUsername() + " " + context.getString(R.string.contact_added), Toast.LENGTH_SHORT).show();
                 context.finish();
