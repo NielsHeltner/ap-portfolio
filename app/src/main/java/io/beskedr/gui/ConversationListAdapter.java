@@ -15,7 +15,6 @@ import java.util.List;
 
 import io.beskedr.R;
 import io.beskedr.domain.Conversation;
-import io.beskedr.domain.ConversationMessage;
 
 public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
 
