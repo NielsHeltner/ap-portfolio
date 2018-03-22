@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,14 +137,16 @@ public class ConversationListFragment extends Fragment {
     private void addOrUpdateConversation(Conversation conversation) {
         if (!conversationContainsUser(conversation)) {
             conversations.add(conversation);
+            conversationListAdapter.notifyItemInserted(conversations.size() - 1);
         }
-        conversationListAdapter.notifyItemInserted(conversations.size() - 1);
     }
 
     private boolean conversationContainsUser(Conversation conversation) {
-        for (Conversation c : conversations) {
+        for (int i = 0; i < conversations.size(); i++) {
+            Conversation c = conversations.get(i);
             if (c.getOther().equals(conversation.getOther())) {
                 c.update(conversation);
+                conversationListAdapter.notifyItemChanged(i);
                 return true;
             }
         }
