@@ -22,9 +22,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.beskedr.R;
 import io.beskedr.domain.ConversationMessage;
@@ -154,7 +155,7 @@ public class ConversationFragment extends Fragment {
     public void sendMessage() {
         EditText messageBox = getView().findViewById(R.id.conversationEditText);
         String message = messageBox.getText().toString().trim();
-        messagesRef.child(convoId).push().setValue(new ConversationMessage(UserManager.getInstance().getCurrentUser().getUsername(), message, new Date().getTime())).addOnFailureListener(new OnFailureListener() {
+        messagesRef.child(convoId).push().setValue(new ConversationMessage(UserManager.getInstance().getCurrentUser().getUsername(), message, Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis())).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(getContext(), R.string.error_convo_send_message, Toast.LENGTH_SHORT).show();
