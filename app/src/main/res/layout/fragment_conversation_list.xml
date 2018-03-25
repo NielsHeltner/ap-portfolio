@@ -16,6 +16,7 @@ tools:context="io.beskedr.gui.ConversationListFragment">
     android:onClick="newContact"
     android:src="@android:drawable/ic_input_add"
     android:tint="@color/colorBackgroundGray"
+    android:elevation="5dp"
     app:backgroundTint="@color/colorAccent"
     app:layout_constraintBottom_toBottomOf="@+id/conversationListView"
     app:layout_constraintEnd_toEndOf="@+id/conversationListView" />
