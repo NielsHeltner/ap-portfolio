@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.Locale;
+
 public class ConversationMessage implements Comparable<ConversationMessage> {
 
     @Exclude
@@ -51,11 +53,10 @@ public class ConversationMessage implements Comparable<ConversationMessage> {
 
     @Exclude
     public String getTimeFormatted() {
-        long second = (time / 1000) % 60;
         long minute = (time / (1000 * 60)) % 60;
         long hour = (time / (1000 * 60 * 60)) % 24;
 
-        return String.format("%02d:%02d", hour, minute);
+        return String.format(Locale.getDefault(), "%02d:%02d", hour, minute);
     }
 
     @Override
