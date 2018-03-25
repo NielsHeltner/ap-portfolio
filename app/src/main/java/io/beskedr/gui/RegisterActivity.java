@@ -34,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.textInputLayoutRegisterPassword) TextInputLayout passwordLayout;
     private DatabaseReference database;
     private ProgressDialog progress;
+    private boolean error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(password.length() < 3) {
                     showErrorMessage(passwordLayout, getString(R.string.error_registration_password_too_short));
                 }
-                else {
+                if(!error) {
                     User newUser = new User(username, email, name, password);
                     createNewUser(newUser, registeredIntent);
                 }
@@ -109,12 +110,15 @@ public class RegisterActivity extends AppCompatActivity {
     private void startLoginActivity(User newUser, Intent intent) {
         intent.putExtra(getString(R.string.EXTRA_USERNAME), newUser.getUsername());
         intent.putExtra(getString(R.string.EXTRA_PASSWORD), newUser.getPassword());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
     private void showErrorMessage(TextInputLayout view, String errorMessage) {
         progress.dismiss();
         view.setError(errorMessage);
+        error = true;
     }
 
     private void clearErrorMessages() {
@@ -122,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
         clearErrorMessage(emailLayout);
         clearErrorMessage(nameLayout);
         clearErrorMessage(passwordLayout);
+        error = false;
     }
 
     private void clearErrorMessage(TextInputLayout view) {
