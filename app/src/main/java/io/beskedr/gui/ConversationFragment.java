@@ -155,13 +155,15 @@ public class ConversationFragment extends Fragment {
     public void sendMessage() {
         EditText messageBox = getView().findViewById(R.id.conversationEditText);
         String message = messageBox.getText().toString().trim();
-        messagesRef.child(convoId).push().setValue(new ConversationMessage(UserManager.getInstance().getCurrentUser().getUsername(), message, Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis())).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), R.string.error_convo_send_message, Toast.LENGTH_SHORT).show();
-            }
-        });
-        messageBox.setText("");
+        if(!message.isEmpty()) {
+            messagesRef.child(convoId).push().setValue(new ConversationMessage(UserManager.getInstance().getCurrentUser().getUsername(), message, Calendar.getInstance(TimeZone.getDefault()).getTimeInMillis())).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), R.string.error_convo_send_message, Toast.LENGTH_SHORT).show();
+                }
+            });
+            messageBox.setText("");
+        }
     }
 
     private void addMessage(ConversationMessage message) {
