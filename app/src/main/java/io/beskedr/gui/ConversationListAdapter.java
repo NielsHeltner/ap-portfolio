@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,16 +55,37 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         Conversation c = shownContent.get(position);
-        ((TextView) viewHolder.view.findViewById(R.id.conversationListName)).setText(c.getOther().getName());
-        if(c.getTime() != 0) {
-            ((TextView) viewHolder.view.findViewById(R.id.conversationListLastMessage)).setText(c.getLastMessageOwner() + ": " + shownContent.get(position).getMessage());
-            ((TextView) viewHolder.view.findViewById(R.id.conversationListTime)).setText(c.getTimeFormatted());
+        TextView name = viewHolder.view.findViewById(R.id.conversationListName);
+
+        name.setText(c.getOther().getName());
+        animate(name, R.anim.enter_scale_overshoot, 100);
+        if (c.getTime() != 0) {
+            TextView message = viewHolder.view.findViewById(R.id.conversationListLastMessage);
+            TextView time = viewHolder.view.findViewById(R.id.conversationListTime);
+
+            message.setText(String.format("%s: %s", c.getLastMessageOwner(), shownContent.get(position).getMessage()));
+            time.setText(c.getTimeFormatted());
+            animate(message, R.anim.enter_from_left, 100);
+            animate(time, R.anim.enter_scale_overshoot, 100);
         }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder viewHolder) {
+        viewHolder.view.findViewById(R.id.conversationListName).clearAnimation();
+        viewHolder.view.findViewById(R.id.conversationListLastMessage).clearAnimation();
+        viewHolder.view.findViewById(R.id.conversationListTime).clearAnimation();
     }
 
     @Override
     public int getItemCount() {
         return shownContent.size();
+    }
+
+    private void animate(View view, int animId, int startOffset) {
+        Animation anim = AnimationUtils.loadAnimation(context, animId);
+        anim.setStartOffset(startOffset);
+        view.startAnimation(anim);
     }
 
 }
