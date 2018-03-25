@@ -58,7 +58,7 @@ public class ConversationListFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         final User user = dataSnapshot.getValue(User.class);
 
-                        messagesRef.child(conversationId).limitToLast(1).addChildEventListener(new ChildEventListener() {
+                        messagesRef.child(conversationId).orderByChild("time").limitToLast(1).addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 ConversationMessage lastMessage = dataSnapshot.getValue(ConversationMessage.class);

@@ -63,7 +63,7 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
             TextView message = viewHolder.view.findViewById(R.id.conversationListLastMessage);
             TextView time = viewHolder.view.findViewById(R.id.conversationListTime);
 
-            message.setText(String.format("%s: %s", c.getLastMessageOwner(), shownContent.get(position).getMessage()));
+            message.setText(String.format("%s: %s", c.getLastMessageOwner(), c.getMessage()));
             time.setText(c.getTimeFormatted());
             animate(message, R.anim.enter_from_left, 100);
             animate(time, R.anim.enter_scale_overshoot, 100);
