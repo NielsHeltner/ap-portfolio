@@ -1,25 +1,21 @@
 package io.beskedr.gui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.registerPassword) EditText passwordField;
     @BindView(R.id.textInputLayoutRegisterPassword) TextInputLayout passwordLayout;
     private DatabaseReference database;
+    private ProgressDialog progress;
+    private boolean error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,45 +51,20 @@ public class RegisterActivity extends AppCompatActivity {
         passwordField.setText(enteredPassword);
 
         database = FirebaseDatabase.getInstance().getReference("users");
-
-        database.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                //Log.d("Database", dataSnapshot.getChildrenCount() + "");
-                Log.d("Database",user.getUsername() + " s: " + s);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        progress = new ProgressDialog(this);
+        progress.setMessage(getString(R.string.register_wait));
+        progress.setCancelable(false);
     }
 
     public void register(View view) {
         clearErrorMessages();
+        progress.show();
 
         final Intent registeredIntent = new Intent(this, LoginActivity.class);
-        final String username = usernameField.getText().toString();
-        final String email = emailField.getText().toString();
-        final String name = nameField.getText().toString();
-        final String password = passwordField.getText().toString();
+        final String username = usernameField.getText().toString().trim();
+        final String email = emailField.getText().toString().trim();
+        final String name = nameField.getText().toString().trim();
+        final String password = passwordField.getText().toString().trim();
 
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -99,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(dataSnapshot.hasChild(username)) {
                     showErrorMessage(usernameLayout, getString(R.string.error_registration_username_taken));
                 }
-                else if(username.length() < 4) {
+                else if(username.length() < 1) {
                     showErrorMessage(usernameLayout, getString(R.string.error_registration_username_too_short));
                 }
                 if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -111,16 +84,10 @@ public class RegisterActivity extends AppCompatActivity {
                 if(password.length() < 3) {
                     showErrorMessage(passwordLayout, getString(R.string.error_registration_password_too_short));
                 }
-                else {
+                if(!error) {
                     User newUser = new User(username, email, name, password);
-                    createNewUser(newUser);
-                    startLoginActivity(registeredIntent, newUser);
+                    createNewUser(newUser, registeredIntent);
                 }
-                /*for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    User user = dataSnapshot.getValue(User.class);
-                    //Log.d("Database", dataSnapshot.getChildrenCount() + "");
-                    Log.d("Database", user.getUsername() + "");
-                }*/
             }
 
             @Override
@@ -130,19 +97,28 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void createNewUser(User newUser) {
-        database.child(newUser.getUsername()).setValue(newUser);
+    private void createNewUser(final User newUser, final Intent intent) {
+        database.child(newUser.getUsername()).setValue(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                startLoginActivity(newUser, intent);
+            }
+        });
         Toast.makeText(getApplicationContext(), R.string.toast_register_success, Toast.LENGTH_SHORT).show();
     }
 
-    private void startLoginActivity(Intent intent, User newUser) {
+    private void startLoginActivity(User newUser, Intent intent) {
         intent.putExtra(getString(R.string.EXTRA_USERNAME), newUser.getUsername());
         intent.putExtra(getString(R.string.EXTRA_PASSWORD), newUser.getPassword());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
     private void showErrorMessage(TextInputLayout view, String errorMessage) {
+        progress.dismiss();
         view.setError(errorMessage);
+        error = true;
     }
 
     private void clearErrorMessages() {
@@ -150,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
         clearErrorMessage(emailLayout);
         clearErrorMessage(nameLayout);
         clearErrorMessage(passwordLayout);
+        error = false;
     }
 
     private void clearErrorMessage(TextInputLayout view) {

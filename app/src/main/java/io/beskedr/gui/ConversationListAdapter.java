@@ -8,20 +8,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import io.beskedr.R;
-import io.beskedr.domain.ConversationMessage;
+import io.beskedr.domain.Conversation;
 
 public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private Context context;
-    private List<ConversationMessage> shownContent;
+    private List<Conversation> shownContent;
 
-    public ConversationListAdapter(Context context, List<ConversationMessage> content) {
+    public ConversationListAdapter(Context context, List<Conversation> content) {
         this.context = context;
         shownContent = content;
     }
@@ -39,13 +41,11 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
                 ConversationFragment cf = new ConversationFragment();
                 Bundle bundle = new Bundle();
 
-                bundle.putSerializable(context.getString(R.string.EXTRA_OTHER_USER), shownContent.get(viewHolder.getAdapterPosition()).getSender());
+                bundle.putSerializable(context.getString(R.string.EXTRA_OTHER_USER), shownContent.get(viewHolder.getAdapterPosition()).getOther());
                 cf.setArguments(bundle);
 
                 f.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                         .replace(R.id.dashboardFragment, cf).addToBackStack(null).commit();
-
-                Toast.makeText(context, "pos " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -54,14 +54,38 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        ((TextView) viewHolder.view.findViewById(R.id.conversationListName)).setText(shownContent.get(position).getSender().getName());
-        ((TextView) viewHolder.view.findViewById(R.id.conversationListLastMessage)).setText(shownContent.get(position).getMessage());
-        ((TextView) viewHolder.view.findViewById(R.id.conversationListTime)).setText(shownContent.get(position).getTime());
+        Conversation c = shownContent.get(position);
+        TextView name = viewHolder.view.findViewById(R.id.conversationListName);
+
+        name.setText(c.getOther().getName());
+        animate(name, R.anim.enter_scale_overshoot, 100);
+        if (c.getTime() != 0) {
+            TextView message = viewHolder.view.findViewById(R.id.conversationListLastMessage);
+            TextView time = viewHolder.view.findViewById(R.id.conversationListTime);
+
+            message.setText(String.format("%s: %s", c.getLastMessageOwner(), c.getMessage()));
+            time.setText(c.getTimeFormatted());
+            animate(message, R.anim.enter_from_left, 100);
+            animate(time, R.anim.enter_scale_overshoot, 100);
+        }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder viewHolder) {
+        viewHolder.view.findViewById(R.id.conversationListName).clearAnimation();
+        viewHolder.view.findViewById(R.id.conversationListLastMessage).clearAnimation();
+        viewHolder.view.findViewById(R.id.conversationListTime).clearAnimation();
     }
 
     @Override
     public int getItemCount() {
         return shownContent.size();
+    }
+
+    private void animate(View view, int animId, int startOffset) {
+        Animation anim = AnimationUtils.loadAnimation(context, animId);
+        anim.setStartOffset(startOffset);
+        view.startAnimation(anim);
     }
 
 }

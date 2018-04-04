@@ -16,7 +16,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:paddingBottom="16dp"
-        android:text="Jeg synes bare det her er en total mega fed og sindssygt gennemført testbesked"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,12 +24,15 @@
 
     <TextView
         android:id="@+id/conversationListName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Lars Petri Christensen"
+        android:singleLine="true"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintEnd_toStartOf="@+id/conversationListTime"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="16.55"
+        android:singleLine="true"
         android:textAppearance="@android:style/TextAppearance.Material.Body1"
         app:layout_constraintBaseline_toBaselineOf="@+id/conversationListName"
         app:layout_constraintEnd_toEndOf="parent" />

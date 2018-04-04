@@ -5,6 +5,7 @@
 
     <!-- Strings for dashboard -->
     <string name="no_messages">Du har ingen beskeder :(</string>
+    <string name="loading_messages">Indlæser beskeder…</string>
 
     <!-- Strings for login -->
     <string name="header_login">Log på &appname;</string>
@@ -14,6 +15,11 @@
     <string name="btn_login">Log på</string>
     <string name="prompt_register">Ingen bruger endnu? Opret en bruger.</string>
     <string name="toast_login">Logget ind</string>
+    <string name="login_wait">Logger ind…</string>
+
+    <!-- Strings for login errors -->
+    <string name="error_login_username_does_not_exist">Brugernavnet eksisterer ikke.</string>
+    <string name="error_login_password_wrong">Passwordet er forkert.</string>
 
     <!-- Strings for register -->
     <string name="prompt_register_header">Registrer på &appname;</string>
@@ -22,6 +28,7 @@
     <string name="btn_register">Registrer</string>
     <string name="toast_register_error">Fejl under registrering</string>
     <string name="toast_register_success">Registreret</string>
+    <string name="register_wait">Registrerer…</string>
 
     <!-- Strings for registration errors -->
     <string name="error_registration_username_taken">Brugernavn er allerede taget</string>
@@ -29,6 +36,11 @@
     <string name="error_registration_email_invalid">Email er ikke gyldig</string>
     <string name="error_registration_name_too_short">Navn er for kort</string>
     <string name="error_registration_password_too_short">Password er for kort</string>
+
+    <!-- Strings for convos -->
+    <string name="error_convo_send_message">Beskeden kunne ikke sendes.</string>
+
+    <string name="contact_added">tilføjet til kontakter.</string>
 
     <!-- Strings for menus -->
     <string name="btn_logout">Log ud</string>
@@ -38,6 +50,7 @@
     <string name="EXTRA_USERNAME">io.beskedr.USERNAME</string>
     <string name="EXTRA_PASSWORD">io.beskedr.PASSWORD</string>
     <string name="EXTRA_OTHER_USER">io.beskedr.OTHER_USER</string>
+    <string name="EXTRA_NEW_CONTACT_USER">io.beskedr.NEW_CONTACT_USER</string>
     <string name="prompt_search">Søg efter brugernavn…</string>
     <string name="prompt_message">Indtast en besked…</string>
 </resources>

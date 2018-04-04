@@ -1,6 +1,5 @@
 package io.beskedr.gui;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,10 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import java.util.List;
@@ -60,7 +55,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (message.getSender().getUsername().equals(UserManager.getInstance().getCurrentUser().getUsername())) {
             return VIEW_TYPE_MESSAGE_SENT;
         }
-        return VIEW_TYPE_MESSAGE_RECEIVED;
+        else {
+            return VIEW_TYPE_MESSAGE_RECEIVED;
+        }
     }
 
     @Override
@@ -73,7 +70,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
                 TextView sentTime = viewHolder.view.findViewById(R.id.conversationSentTime);
 
                 sentMessage.setText(message.getMessage());
-                sentTime.setText(message.getTime());
+                sentTime.setText(message.getTimeFormatted());
 
                 if (position == conversationMessages.size() - 1) {
                     animate(sentMessage, R.anim.enter_scale_overshoot, 500);
@@ -86,7 +83,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ViewHolder> {
                 TextView receivedName = viewHolder.view.findViewById(R.id.conversationReceivedName);
 
                 receivedMessage.setText(message.getMessage());
-                receivedTime.setText(message.getTime());
+                receivedTime.setText(message.getTimeFormatted());
                 receivedName.setText(message.getSender().getUsername());
 
                 if (position == conversationMessages.size() - 1) {

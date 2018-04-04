@@ -1,6 +1,8 @@
 package io.beskedr.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User implements Serializable {
 
@@ -8,6 +10,7 @@ public class User implements Serializable {
     private String email;
     private String name;
     private String password;
+    private Map<String, String> contacts;
 
     public User() {}
 
@@ -16,6 +19,7 @@ public class User implements Serializable {
         this.email = email;
         this.name = name;
         this.password = password;
+        contacts = new HashMap<>();
     }
 
     public String getUsername() {
@@ -32,6 +36,10 @@ public class User implements Serializable {
 
     public String getPassword() {
         return password;
+    }
+
+    public Map<String, String> getContacts() {
+        return contacts;
     }
 
     @Override
