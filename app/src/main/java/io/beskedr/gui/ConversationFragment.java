@@ -1,8 +1,18 @@
 package io.beskedr.gui;
 
 
+
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,6 +80,34 @@ public class ConversationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 sendMessage();
+               /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    // Create the NotificationChannel
+                    int importance = NotificationManager.IMPORTANCE_HIGH;
+                    NotificationChannel mChannel = new NotificationChannel("testChannel", "channelName", importance);
+                    mChannel.setDescription("Fuck det er en test");
+                    mChannel.setShowBadge(true);
+                    mChannel.enableLights(true);
+                    // Sets whether notification posted to this channel should vibrate.
+                    mChannel.enableVibration(true);
+                    // Sets the notification light color for notifications posted to this channel
+                    mChannel.setLightColor(Color.BLUE);
+                    // Sets whether notifications posted to this channel appear on the lockscreen or not
+                    mChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+                    NotificationManager mNotificationManager = (NotificationManager)
+                            getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                    mNotificationManager.createNotificationChannel(mChannel);
+
+                    NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(getActivity(), "testChannel")
+                                    .setSmallIcon(R.drawable.ic_send)
+                                    .setContentTitle("My notification")
+                                    .setContentText("Hello World!");
+
+                    mNotificationManager.notify(1, mBuilder.build());
+
+                }
+            */
+
             }
         });
 
@@ -85,6 +123,7 @@ public class ConversationFragment extends Fragment {
             conversationMessages.add(new ConversationMessage(you, "test", "14:05"));
         }
         TEST_FOR_MESSAGES++;
+
 
 
         updateRecyclerViewPan();
